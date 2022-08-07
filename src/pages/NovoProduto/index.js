@@ -44,14 +44,11 @@ export default function NovoProduto() {
             }) 
     }
 
-    async function loadColecoes(){
-        await api.get('/colecao', header)
+    function loadColecoes(){
+        api.get('/colecao', header)
             .then(response => {
                 setListaColecoes(response.data)
             }) 
-
-        document.getElementById("opcoesColecoes").appendChild(listaOpcoesColecoes([listaColecoes
-          ]));
     }
 
     async function criarNovoProduto(e) {
@@ -64,7 +61,7 @@ export default function NovoProduto() {
                 valorVarejo,
                 statusProduto,
                 classeProduto,
-                colecoes : [],
+                colecoes,
                 tamanhosAceitos : [], 
         }
 
@@ -82,10 +79,6 @@ export default function NovoProduto() {
         loadColecoes();
     },[])
 
-    function handleCheckboxes(id) {
-        setListaColecoes(listaColecoes.map(listaColecoes => listaColecoes.id === id ? {...listaColecoes, checked: !listaColecoes.checked} : listaColecoes))
-      }
-
     function onSelect(e) {
         setClasseProduto({id : e.target.value});
         setViewClasseProduto(e.target.value);
@@ -95,35 +88,23 @@ export default function NovoProduto() {
         return !!(e.target.value)
     }
 
-    function addColecaoSelecionada(e) {
-        colecoesSelecionadas.append(e.target.value)
+    function newAddOrRemoveItens(e, array) {
+        let arrayClone = Object.assign([], colecoes);
 
-    }
-
-
-    function listaOpcoesColecoes(conteudo) {
-        var tabela = document.createElement("table");
-        var thead = document.createElement("thead");
-        var tbody=document.createElement("tbody");
-        var thd=function(i){return (i==0)?"th":"td";};
-        for (var i=0;i<conteudo.length;i++) {
-          var tr = document.createElement("tr");
-          for(var o=0;o<conteudo[i].length;o++){
-            var t = document.createElement(thd(i));
-            var texto=document.createTextNode(conteudo[i][o]);
-            t.appendChild(texto);
-            tr.appendChild(t);
-          }
-          (i==0)?thead.appendChild(tr):tbody.appendChild(tr);
+        if (arrayClone.includes(e.target.value)) {
+            arrayClone.splice(arrayClone.indexOf(e.target.value), 1)
         }
-        tabela.appendChild(thead);
-        tabela.appendChild(tbody);
-        return tabela;
-      }
-      
+        if (e.target.checked) {
+            arrayClone.push(e.target.value)
+        }
 
+        arrayClone.sort( function(a, b) { return a-b } )
+        
+        console.log(arrayClone);
+
+        return arrayClone;
+    }
     
-
     return (
         <div className='novo-produto-container'>
             <div className='conteudo'>
@@ -144,12 +125,13 @@ export default function NovoProduto() {
 
                     <input 
                     type="checkbox" 
-                    name="Conjunto" 
-                    class="inline checkbox" 
-                    id="checkbox1" 
+                    name="conjunto" 
+                    className="inline checkbox" 
+                    // id="checkbox1" 
                     value='false' 
                     onClick={e => setConjunto(changeCheckbox(e))}
                     />
+                    <label htmlFor="conjunto">Conjunto</label>
 
                     <input 
                     placeholder="Valor Atacado"
@@ -165,7 +147,8 @@ export default function NovoProduto() {
                     placeholder="Status Produto"
                     value={statusProduto}
                     onChange={e => setStatusProduto(e.target.value)} 
-                    />            
+                    />     
+
                     <select value={viewClasseProduto} onChange={e => {onSelect(e)}}>
                         <option value="">Selecione uma Classe</option>
                             {listaClasses.map((a, b) => (
@@ -173,35 +156,28 @@ export default function NovoProduto() {
                             ))}
                     </select>                   
 
-                    <select value={colecoes} onChange={e => {setColecoes([{id : e.target.value}])}}>
-                        <option value="">Selecione uma Colecao</option>
+                    <table>
+                        <tbody>
                             {listaColecoes.map((a, b) => (
-                                <option value={a.id}>{a.nomeColecao}</option>
-                            ))}
-                    </select>   
-
-                    <div id="opcoesColecoes"></div> 
-
-                    {/* <div id="tamanhos">
-                        Tamanhos
-                                <script>
-                        {listaColecoes.map((e) => (
-                            <input type="checkbox" value="1">Ulala</input>
-                        ))}
-                        </script>
-                    
-                    </div>  */}
-
+                                <tr>
+                                    <td>
+                                        <input 
+                                        className="colecao_checkbox"
+                                        type="checkbox" 
+                                        name={a.nomeColecao} 
+                                        value={a.id}
+                                        onClick={e => {
+                                            setColecoes(newAddOrRemoveItens(e, colecoes));
+                                            console.log(colecoes);
+                                            }}/>
+                                        <label htmlFor={a.nomeColecao}>{a.nomeColecao}</label>
+                                    </td>
+                                </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
                 
-
-
-
-                    
-                    {/* <input 
-                    placeholder="Coleções"
-                    value={colecoes}
-                    onChange={e => setColecoes(e.target.value)} 
-                    /> */}
                     <input  
                     placeholder="Tamanhos Aceitos" 
                     value={tamanhosAceitos}
