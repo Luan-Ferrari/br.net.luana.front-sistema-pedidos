@@ -21,7 +21,10 @@ export default function NovoProduto() {
     const [conjunto, setConjunto] = useState('');
     const [valorAtacado, setValorAtacado] = useState('');
     const [valorVarejo, setValorVarejo] = useState('');
+
+    const [listaStatusProduto, setListaStatusProduto] = useState([]);
     const [statusProduto, setStatusProduto] = useState('');
+    const [viewStatusProduto, setViewStatusProduto] = useState('');
 
     const [listaClasses, setListaClasses] = useState([]);
     const [classeProduto, setClasseProduto] = useState('');
@@ -29,8 +32,8 @@ export default function NovoProduto() {
 
     const [listaColecoes, setListaColecoes] = useState([]);
     const [colecoes, setColecoes] = useState([]);
-    const colecoesSelecionadas = [];
 
+    const [listaTamanhos, setListaTamanhos] = useState([]);
     const [tamanhosAceitos, setTamanhosAceitos] = useState('');
 
 
@@ -44,10 +47,24 @@ export default function NovoProduto() {
             }) 
     }
 
-    function loadColecoes(){
-        api.get('/colecao', header)
+    async function loadColecoes(){
+        await api.get('/colecao', header)
             .then(response => {
                 setListaColecoes(response.data)
+            }) 
+    }
+
+    async function loadStatusProduto(){
+        await api.get('/enums/statusProduto', header)
+            .then(response => {
+                setListaStatusProduto(response.data)
+            }) 
+    }
+
+    async function loadTamanhos(){
+        await api.get('/enums/tamanho', header)
+            .then(response => {
+                setListaTamanhos(response.data)
             }) 
     }
 
@@ -75,21 +92,23 @@ export default function NovoProduto() {
 
 
     useEffect(() => {
+        loadStatusProduto();
+        loadTamanhos();
         loadClasses();
         loadColecoes();
     },[])
 
-    function onSelect(e) {
-        setClasseProduto({id : e.target.value});
-        setViewClasseProduto(e.target.value);
-    }
-
     function changeCheckbox(e) {
-        return !!(e.target.value)
+        if(e.target.checked === true) {
+            return true
+        } else {
+            return false
+        }
+        
     }
 
-    function newAddOrRemoveItens(e, array) {
-        let arrayClone = Object.assign([], colecoes);
+    function addOrRemoveItens(e, array) {
+        let arrayClone = Object.assign([], array);
 
         if (arrayClone.includes(e.target.value)) {
             arrayClone.splice(arrayClone.indexOf(e.target.value), 1)
@@ -99,10 +118,24 @@ export default function NovoProduto() {
         }
 
         arrayClone.sort( function(a, b) { return a-b } )
-        
-        console.log(arrayClone);
 
         return arrayClone;
+    }
+
+    function creatObjectById(idObject) {
+        return { id : idObject }
+    }
+
+    function extractId(item) {
+        return item.id;
+    }
+
+    function extractIdsFromObjectsArray(array) {
+        return array.map(a => extractId(a))
+    }
+
+    function creatObjectsArrayByIds(array) {
+        return array.map((a) => creatObjectById(a))
     }
     
     return (
@@ -126,9 +159,7 @@ export default function NovoProduto() {
                     <input 
                     type="checkbox" 
                     name="conjunto" 
-                    className="inline checkbox" 
-                    // id="checkbox1" 
-                    value='false' 
+                    className="conjunto_checkbox" 
                     onClick={e => setConjunto(changeCheckbox(e))}
                     />
                     <label htmlFor="conjunto">Conjunto</label>
@@ -143,17 +174,23 @@ export default function NovoProduto() {
                     value={valorVarejo}
                     onChange={e => setValorVarejo(e.target.value)} 
                     />
-                    <input 
-                    placeholder="Status Produto"
-                    value={statusProduto}
-                    onChange={e => setStatusProduto(e.target.value)} 
-                    />     
+                  
+                 
 
-                    <select value={viewClasseProduto} onChange={e => {onSelect(e)}}>
+                    <select value={viewClasseProduto} onChange={e => {setClasseProduto({id : e.target.value})
+                                                                        setViewClasseProduto(e.target.value)}}>
                         <option value="">Selecione uma Classe</option>
-                            {listaClasses.map((a, b) => (
-                                <option value={a.id}>{a.nomeClasse}</option>
-                            ))}
+                        {listaClasses.map((a, b) => (
+                            <option value={a.id}>{a.nomeClasse}</option>
+                        ))}
+                    </select>               
+
+                    <select value={viewStatusProduto} onChange={e => {setStatusProduto({codigo : e.target.value})
+                                                                        setViewStatusProduto(e.target.value)}}>
+                        <option value="">Selecione um Status</option>
+                        {listaStatusProduto.map((a, b) => (
+                            <option value={a.codigo}>{a.descricao}</option>
+                        ))}
                     </select>                   
 
                     <table>
@@ -167,9 +204,9 @@ export default function NovoProduto() {
                                         name={a.nomeColecao} 
                                         value={a.id}
                                         onClick={e => {
-                                            setColecoes(newAddOrRemoveItens(e, colecoes));
-                                            console.log(colecoes);
-                                            }}/>
+                                            setColecoes(creatObjectsArrayByIds (
+                                                addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
+                                        }}/>
                                         <label htmlFor={a.nomeColecao}>{a.nomeColecao}</label>
                                     </td>
                                 </tr>
