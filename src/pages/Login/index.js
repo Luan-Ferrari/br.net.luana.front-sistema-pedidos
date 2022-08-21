@@ -24,7 +24,7 @@ export default function Login() {
         try {
             const response = await api.post('/login', data);
 
-            localStorage.setItem('nomeUsuario', nomeUsuario);
+            localStorage.setItem('usuario', response.headers.usuario);
             localStorage.setItem('accessToken', response.headers.authorization);
 
             navigate('/books');

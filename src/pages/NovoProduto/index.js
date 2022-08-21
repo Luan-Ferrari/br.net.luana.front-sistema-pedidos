@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './styles.css';
-import logoImage from '../../assets/logo.svg';
-import { FiArrowLeft } from 'react-icons/fi';
+
+import { creatObjectsArrayByIds, changeCheckbox, addOrRemoveItens, extractIdsFromObjectsArray } from '../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
+import { createDefaultHeader } from '../DefaultComponents/header/header';
 
 import api from '../../services/api'
 
@@ -18,6 +19,7 @@ export default function NovoProduto() {
 
     const [id, setId] = useState(null);
     const [codigoProduto, setCodigoProduto] = useState('');
+    const [descricao, setDescricao] = useState('');
     const [conjunto, setConjunto] = useState('');
     const [valorAtacado, setValorAtacado] = useState('');
     const [valorVarejo, setValorVarejo] = useState('');
@@ -34,9 +36,7 @@ export default function NovoProduto() {
     const [colecoes, setColecoes] = useState([]);
 
     const [listaTamanhos, setListaTamanhos] = useState([]);
-    const [tamanhosAceitos, setTamanhosAceitos] = useState('');
-
-
+    const [tamanhosAceitos, setTamanhosAceitos] = useState([]);
 
     const navigate = useNavigate();
 
@@ -73,13 +73,14 @@ export default function NovoProduto() {
 
         const data = {
                 codigoProduto,
+                descricao,
                 conjunto,
                 valorAtacado,
                 valorVarejo,
                 statusProduto,
                 classeProduto,
                 colecoes,
-                tamanhosAceitos : [], 
+                tamanhosAceitos, 
         }
 
         try {
@@ -90,7 +91,6 @@ export default function NovoProduto() {
         }
     }
 
-
     useEffect(() => {
         loadStatusProduto();
         loadTamanhos();
@@ -98,62 +98,23 @@ export default function NovoProduto() {
         loadColecoes();
     },[])
 
-    function changeCheckbox(e) {
-        if(e.target.checked === true) {
-            return true
-        } else {
-            return false
-        }
-        
-    }
-
-    function addOrRemoveItens(e, array) {
-        let arrayClone = Object.assign([], array);
-
-        if (arrayClone.includes(e.target.value)) {
-            arrayClone.splice(arrayClone.indexOf(e.target.value), 1)
-        }
-        if (e.target.checked) {
-            arrayClone.push(e.target.value)
-        }
-
-        arrayClone.sort( function(a, b) { return a-b } )
-
-        return arrayClone;
-    }
-
-    function creatObjectById(idObject) {
-        return { id : idObject }
-    }
-
-    function extractId(item) {
-        return item.id;
-    }
-
-    function extractIdsFromObjectsArray(array) {
-        return array.map(a => extractId(a))
-    }
-
-    function creatObjectsArrayByIds(array) {
-        return array.map((a) => creatObjectById(a))
-    }
-    
     return (
         <div className='novo-produto-container'>
             <div className='conteudo'>
-                <section className='form'>
-                    <img src={logoImage} alt="Logo Confecções Luana"/>
-                    <h1>Adicionar Novo Produto</h1>
-                    <p>Entre com as infomações do produto e clique 'Adicionar'</p>
-                    <Link className='back-link' to="/books">
-                        <FiArrowLeft size={16} color="#251fc5"/>
-                    </Link>
-                </section>
+
+                {createDefaultHeader()}
+        
                 <form onSubmit={criarNovoProduto}>
                     <input  
                     placeholder="Codigo do Produto" 
                     value={codigoProduto}
                     onChange={e => setCodigoProduto(e.target.value)}
+                    />
+
+                    <input  
+                    placeholder="Descricao do Produto" 
+                    value={descricao}
+                    onChange={e => setDescricao(e.target.value)}
                     />
 
                     <input 
@@ -174,8 +135,6 @@ export default function NovoProduto() {
                     value={valorVarejo}
                     onChange={e => setValorVarejo(e.target.value)} 
                     />
-                  
-                 
 
                     <select value={viewClasseProduto} onChange={e => {setClasseProduto({id : e.target.value})
                                                                         setViewClasseProduto(e.target.value)}}>
@@ -185,11 +144,11 @@ export default function NovoProduto() {
                         ))}
                     </select>               
 
-                    <select value={viewStatusProduto} onChange={e => {setStatusProduto({codigo : e.target.value})
+                    <select value={viewStatusProduto} onChange={e => {setStatusProduto({id : e.target.value})
                                                                         setViewStatusProduto(e.target.value)}}>
                         <option value="">Selecione um Status</option>
                         {listaStatusProduto.map((a, b) => (
-                            <option value={a.codigo}>{a.descricao}</option>
+                            <option value={a.id}>{a.descricao}</option>
                         ))}
                     </select>                   
 
@@ -214,12 +173,30 @@ export default function NovoProduto() {
                             }
                         </tbody>
                     </table>
+
+                    <table>
+                        <tbody>
+                            {listaTamanhos.map((a, b) => (
+                                <tr>
+                                    <td>
+                                        <input 
+                                        className="tamanho_checkbox"
+                                        type="checkbox" 
+                                        name={a.descricao} 
+                                        value={a.id}
+                                        onClick={e => {
+                                            setTamanhosAceitos(creatObjectsArrayByIds (
+                                                addOrRemoveItens(e, extractIdsFromObjectsArray(tamanhosAceitos))));
+                                                console.log(tamanhosAceitos);
+                                        }}/>
+                                        <label htmlFor={a.descricao}>{a.descricao}</label>
+                                    </td>
+                                </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
                 
-                    <input  
-                    placeholder="Tamanhos Aceitos" 
-                    value={tamanhosAceitos}
-                    onChange={e => setTamanhosAceitos(e.target.value)} 
-                    />
                     <button className='button' type="submit">Add</button>
                 </form>
             </div>
