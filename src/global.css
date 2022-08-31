@@ -5,46 +5,67 @@
     box-sizing: border-box;
 }
 
-body {
-    font: 400 14px sans-serif;
-    background: #F0F0F5;
+.linha-navegacao {
+    width: 99%;
+    margin: 10px auto;
 }
 
-input, button, textarea {
-    font: 400 18px sans-serif;
+.linha-navegacao div p {
+    color: #3d293b;
+    font-size: 17px;
+    display: inline-block;
+    margin: 0 7px;
+    letter-spacing: 0.8px;
+}
+
+body {
+    font: 400 14px Helvetica;
+}
+
+input, button, textarea, label, select {
+    font: 600 15px sans-serif;
+    letter-spacing: 0.8px;
 }
 
 button {
     cursor: pointer;
 }
 
-form input {
+form div {
+    margin: 10px;
+}
+
+form label {
+    color: #3d293b;
+
+}
+
+form input, select, .tabela-opcoes {
     width: 100%;
-    height: 60px;
+    height: 40px;
     color: #333333;
     border: 1px solid #DCDCE6;
     border-radius: 8px;
     padding: 0 24px;
-    margin-top: 16px;
+    margin-top: 6px;
+    background-color: #ffffff;
 }
 
 .button {
     width: 100%;
-    height: 60px;
-    background: #000000;
-    border-color: #ff19cd;
+    height: 40px;
+    background: #cc2388;
+    border-color: #ffffff;
     border-style: solid;
-    border-radius: 8px;
-    border-width: 2px;
-    border-radius: 8px;
+    border-radius: 5px;
+    border-width: 1px;
     color: #FFF;
     font-weight: 700;
-    margin-top: 16px;
     display: inline-block;
     text-align: center;
     text-decoration: none;
     font-size: 18px;
-    line-height: 60px;
+    line-height: 38px;
     transition: filter 0.2s;
 }
 

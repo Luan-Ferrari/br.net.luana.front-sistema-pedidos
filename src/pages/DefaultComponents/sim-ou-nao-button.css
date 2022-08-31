@@ -1,0 +1,52 @@
+.sim-ou-nao-container{
+    min-width: 120px;
+}
+
+.sim-ou-nao {
+   position: absolute;
+}
+
+.sim-ou-nao label {
+    position: absolute;
+    display: inline-block;
+    cursor: pointer;
+    height: 38px;
+    width: 60px;
+    
+    margin: -3px -10px 0 -10px;
+    text-align: center;
+    line-height: 35px;
+
+    background-color: #999999;
+    color: #d9d9d9;
+
+    /* border: solid 1px;
+    border-color: #dcdce6; */
+
+    transition: filter 0.2s;
+}
+
+.sim-ou-nao label:hover {
+    filter: brightness(90%);
+}
+
+.sim-ou-nao:nth-child(2) label {
+    border-radius: 5px 0 0 5px;
+    /* border-style: solid none solid solid; */
+}
+
+.sim-ou-nao:nth-child(3) label {
+    left: 60px;
+    border-radius: 0 5px 5px 0;
+    /* border-style: solid solid solid none; */
+}
+
+.sim-ou-nao input:checked ~ label {
+    background-color: #cc2388;
+    color: #ffffff;
+    
+}
+
+.sim-ou-nao-container input {
+  display: none;
+}

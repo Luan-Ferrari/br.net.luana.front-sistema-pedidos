@@ -1,0 +1,30 @@
+
+
+.janela-padrao {
+    width: 99%;
+    background-color: #e9e9e9;
+    margin: 10px auto;
+    border: #cc2388 solid 1px;
+    box-sizing: border-box;
+    border-radius: 6px; 
+}
+
+.barra-titulo-janela-padrao {
+    background-color: #cc2388;
+    border-radius: 5px 5px 0 0;
+    height: 30px;
+    position: relative;
+}
+
+.barra-titulo-janela-padrao p {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    color: #ffffff;
+    margin: 4px 0 4px 30px;
+    position: absolute;
+    letter-spacing: 1.2px;
+}
+
+.conteudo-janela-padrao {
+    padding: 0 12px 12px 12px;
+}

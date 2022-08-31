@@ -1,42 +1,69 @@
-.novo-produto-container {
+.page-container {
     width: 100%;
     max-width: 2100px;
     height: 100vh;
     margin: 0 auto;
-
     align-items: center;
     justify-content: space-between;
 }
 
-.novo-produto-container .conteudo {
+.page-container .conteudo {
     width: 100%;
-    background: #f0f0f5;
-    box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    height: 100%;
+    background: #d9d9d9; 
+}
 
+.conteudo-janela-padrao form{
+    display: grid;
+    grid-template-areas: 
+    'codigo descricao descricao descricao conjunto'
+    'atacado varejo status classe classe'
+    'colecoes colecoes colecoes tamanhos tamanhos'
+    '. . . . submit';
+}
+
+
+#codigo-produto {
+    grid-area: codigo;
+}
+
+#descricao-produto {
+    grid-area: descricao;
+}
+
+#conjunto {
+    grid-area: conjunto;
     
-    justify-content: space-between;
-    align-items: center;
 }
 
-.novo-produto-container .conteudo form {
-    width: 100%;
-    max-width: 450px;
-
+#valor-atacado {
+    grid-area: atacado;
 }
 
-.novo-produto-container .conteudo form input {
-    margin-top: 8px;
+#valor-varejo {
+    grid-area: varejo;
 }
 
-.novo-produto-container .conteudo form table {
-    margin-top: 8px;
-    height: 50px;
-    width: 300px;
+#classe-produto {
+    grid-area: classe;
 }
 
-.novo-produto-container .conteudo form table input{
-    margin-top: 8px;
-    height: 15px;
-    width: 15px;
+#status-produto {
+    grid-area: status;
+}
+
+#colecoes {
+    grid-area: colecoes;
+}
+
+#tamanhos {
+    grid-area: tamanhos;
+}
+
+#botao-submit {
+    grid-area: submit;
+}
+
+.tabela-opcoes {
+    height: 400px;
 }
