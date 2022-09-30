@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import '../DefaultComponents/janelas.css';
-import '../DefaultComponents/sim-ou-nao-button.css'
+import '../DefaultComponents/boolean-button.css'
 import '../DefaultComponents/tabelas.css'
 import './styles.css';
 
@@ -12,6 +12,7 @@ import { creatObjectsArrayByIds, addOrRemoveItens, extractIdsFromObjectsArray } 
 import { createDefaultHeader } from '../DefaultComponents/header/header';
 
 import api from '../../services/api'
+import { booleanButtonField, defaultField } from '../DefaultComponents/form-fields/form-fields';
 
 export default function NovoProduto() {
 
@@ -130,7 +131,7 @@ export default function NovoProduto() {
 
                     <div className="conteudo-janela-padrao">
                         <form onSubmit={criarNovoProduto}>
-                            <div id="codigo-produto">
+                            {/* <div id="codigo-produto">
                                 <label htmlFor='codigo-produto'>Código do Produto</label>
                                 <input
                                 name="codigo-produto"
@@ -138,9 +139,10 @@ export default function NovoProduto() {
                                 value={codigoProduto}
                                 onChange={e => setCodigoProduto(e.target.value)}
                                 />
-                            </div>
+                            </div> */}
+                            {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
                             
-                            <div id="descricao-produto">
+                            {/* <div id="descricao-produto">
                                 <label htmlFor='descricao-produto'>Descrição do Produto</label>
                                 <input
                                 name="descricao-produto"
@@ -148,23 +150,25 @@ export default function NovoProduto() {
                                 value={descricao}
                                 onChange={e => setDescricao(e.target.value)}
                                 />
-                            </div>
+                            </div> */}
+                            {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
 
-                            <div className="sim-ou-nao-container" id="conjunto">
+                            {/* <div className="boolean-button-container" id="conjunto">
                                 <label>Conjunto</label>
-                                <div className="sim-ou-nao">
-                                    <input type="radio" id="radio-sim" name="conjunto" 
+                                <div className="boolean-button">
+                                    <input type="radio" id="opcao-um" name="conjunto" 
                                     onClick={e => setConjunto(true)}/>
-                                    <label className="botao-sim" htmlFor='radio-sim'>Sim</label>
+                                    <label className="botao-um" htmlFor='opcao-um'>Sim</label>
                                 </div>
-                                <div className="sim-ou-nao">
-                                    <input type="radio" id="radio-nao" name="conjunto" 
+                                <div className="boolean-button">
+                                    <input type="radio" id="opcao-dois" name="conjunto" 
                                     onClick={e => setConjunto(false)}/>
-                                    <label id="botao-nao" className="botao-nao" htmlFor='radio-nao'>Não</label>
+                                    <label className="botao-dois" htmlFor='opcao-dois'>Não</label>
                                 </div>
-                            </div>                            
+                            </div>    */}
+                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}                         
 
-                            <div id="valor-atacado">
+                            {/* <div id="valor-atacado">
                                 <label htmlFor="valor-atacado">Valor Atacado</label>
                                 <input
                                 name="valor-atacado"
@@ -172,9 +176,10 @@ export default function NovoProduto() {
                                 value={valorAtacado}
                                 onChange={e => setValorAtacado(e.target.value)} 
                                 />
-                            </div>
+                            </div> */}
+                            {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
 
-                            <div id="valor-varejo">
+                            {/* <div id="valor-varejo">
                                 <label htmlFor="valor-varejo">Valor Varejo</label>
                                 <input
                                 name="valor-varejo"
@@ -182,7 +187,8 @@ export default function NovoProduto() {
                                 value={valorVarejo}
                                 onChange={e => setValorVarejo(e.target.value)} 
                                 />
-                            </div>
+                            </div> */}
+                            {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
 
                             <div id="classe-produto">
                                 <label htmlFor="classe-produto">Classe do Produto</label>
@@ -190,8 +196,7 @@ export default function NovoProduto() {
                                 name="classe-produto"
                                 value={viewClasseProduto} 
                                 onChange={e => {setClasseProduto({id : e.target.value})
-                                                setViewClasseProduto(e.target.value)}}
-                                className="select-tam-2">
+                                                setViewClasseProduto(e.target.value)}}>
                                     <option value="">Selecione uma Classe</option>
                                     {listaClasses.map((a, b) => (
                                         <option value={a.id}>{a.nomeClasse}</option>
@@ -205,14 +210,13 @@ export default function NovoProduto() {
                                 name="status-produto"
                                 value={viewStatusProduto} 
                                 onChange={e => {setStatusProduto({id : e.target.value})
-                                                setViewStatusProduto(e.target.value)}}
-                                className="select-tam-2">
+                                                setViewStatusProduto(e.target.value)}}>
                                     <option value="">Selecione um Status</option>
                                     {listaStatusProduto.map((a, b) => (
                                         <option value={a.id}>{a.descricao}</option>
                                     ))}
                                 </select>   
-                            </div>                
+                            </div>             
 
                             <div id="colecoes">
                                 <label htmlFor="colecoes">Coleções</label>

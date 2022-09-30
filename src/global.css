@@ -51,6 +51,11 @@ form input, select, .tabela-opcoes {
     background-color: #ffffff;
 }
 
+select option {
+    color: #333333;
+    font: 600 15px sans-serif;
+}
+
 .button {
     width: 100%;
     height: 40px;
