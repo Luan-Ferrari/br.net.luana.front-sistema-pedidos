@@ -27,7 +27,7 @@ export default function Login() {
             localStorage.setItem('usuario', response.headers.usuario);
             localStorage.setItem('accessToken', response.headers.authorization);
 
-            navigate('/books');
+            navigate('/produto');
         } catch (err) {
           alert('Login failed! Try again!')
         }

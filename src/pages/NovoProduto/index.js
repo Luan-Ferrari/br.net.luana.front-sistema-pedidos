@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import '../DefaultComponents/janelas.css';
@@ -8,11 +8,10 @@ import './styles.css';
 
 // import { MdCheckBox } from 'react-icons/md'
 
-import { creatObjectsArrayByIds, addOrRemoveItens, extractIdsFromObjectsArray } from '../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 import { createDefaultHeader } from '../DefaultComponents/header/header';
 
 import api from '../../services/api'
-import { booleanButtonField, defaultField } from '../DefaultComponents/form-fields/form-fields';
+import { booleanButtonField, defaultField, selectField, checkboxListField } from '../DefaultComponents/form-fields/form-fields';
 
 export default function NovoProduto() {
 
@@ -47,52 +46,54 @@ export default function NovoProduto() {
 
     const navigate = useNavigate();
 
-    async function loadClasses(){
+    const obj = new Object();
+
+    async function loadClasses() {
         await api.get('/classeProduto', header)
             .then(response => {
                 setListaClasses(response.data)
-            }) 
+            })
     }
 
-    async function loadColecoes(){
+    async function loadColecoes() {
         await api.get('/colecao', header)
             .then(response => {
                 setListaColecoes(response.data)
-            }) 
+            })
     }
 
-    async function loadStatusProduto(){
+    async function loadStatusProduto() {
         await api.get('/enums/statusProduto', header)
             .then(response => {
                 setListaStatusProduto(response.data)
-            }) 
+            })
     }
 
-    async function loadTamanhos(){
+    async function loadTamanhos() {
         await api.get('/enums/tamanho', header)
             .then(response => {
                 setListaTamanhos(response.data)
-            }) 
+            })
     }
 
     async function criarNovoProduto(e) {
         e.preventDefault();
 
         const data = {
-                codigoProduto,
-                descricao,
-                conjunto,
-                valorAtacado,
-                valorVarejo,
-                statusProduto,
-                classeProduto,
-                colecoes,
-                tamanhosAceitos, 
+            codigoProduto,
+            descricao,
+            conjunto,
+            valorAtacado,
+            valorVarejo,
+            statusProduto,
+            classeProduto,
+            colecoes,
+            tamanhosAceitos,
         }
 
         try {
-            const response = await api.post('/produto', data , header) 
-            navigate('/books')
+            const response = await api.post('/produto', data, header)
+            navigate('/produto')
         } catch (err) {
             for (const [erro, mensagem] of Object.entries(err.response.data)) {
                 console.log(erro + ': ' + mensagem);
@@ -106,7 +107,7 @@ export default function NovoProduto() {
         loadTamanhos();
         loadClasses();
         loadColecoes();
-    },[])
+    }, [])
 
     return (
         <div className='page-container'>
@@ -141,7 +142,7 @@ export default function NovoProduto() {
                                 />
                             </div> */}
                             {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
-                            
+
                             {/* <div id="descricao-produto">
                                 <label htmlFor='descricao-produto'>Descrição do Produto</label>
                                 <input
@@ -166,7 +167,7 @@ export default function NovoProduto() {
                                     <label className="botao-dois" htmlFor='opcao-dois'>Não</label>
                                 </div>
                             </div>    */}
-                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}                         
+                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
 
                             {/* <div id="valor-atacado">
                                 <label htmlFor="valor-atacado">Valor Atacado</label>
@@ -190,77 +191,88 @@ export default function NovoProduto() {
                             </div> */}
                             {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
 
-                            <div id="classe-produto">
+                            {/* <div id="classe-produto">
                                 <label htmlFor="classe-produto">Classe do Produto</label>
-                                <select 
-                                name="classe-produto"
-                                value={viewClasseProduto} 
-                                onChange={e => {setClasseProduto({id : e.target.value})
-                                                setViewClasseProduto(e.target.value)}}>
+                                <select
+                                    name="classe-produto"
+                                    value={viewClasseProduto}
+                                    onChange={e => {
+                                        setClasseProduto({ id: e.target.value })
+                                        setViewClasseProduto(e.target.value)
+                                    }}>
                                     <option value="">Selecione uma Classe</option>
                                     {listaClasses.map((a, b) => (
                                         <option value={a.id}>{a.nomeClasse}</option>
                                     ))}
                                 </select>
-                            </div>               
+                            </div> */}
+                            {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto, 
+                                "id", setViewClasseProduto, viewClasseProduto, listaClasses, "nomeClasse")}
 
-                            <div id="status-produto">
+                            {/* <div id="status-produto">
                                 <label htmlFor="status-produto">Status do Produto</label>
-                                <select 
-                                name="status-produto"
-                                value={viewStatusProduto} 
-                                onChange={e => {setStatusProduto({id : e.target.value})
-                                                setViewStatusProduto(e.target.value)}}>
+                                <select
+                                    name="status-produto"
+                                    value={viewStatusProduto}
+                                    onChange={e => {
+                                        setStatusProduto({ id: e.target.value })
+                                        setViewStatusProduto(e.target.value)
+                                    }}>
                                     <option value="">Selecione um Status</option>
                                     {listaStatusProduto.map((a, b) => (
                                         <option value={a.id}>{a.descricao}</option>
                                     ))}
-                                </select>   
-                            </div>             
+                                </select>
+                            </div> */}
+                            {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto, 
+                                "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
 
-                            <div id="colecoes">
+                            {/* <div id="colecoes">
                                 <label htmlFor="colecoes">Coleções</label>
-                                <div id="tabela-colecoes" className="tabela-opcoes" name="colecoes">
+                                <div className="tabela-opcoes" name="colecoes">
                                     {listaColecoes.map((a, b) => (
                                         <div>
                                             <label className="container-checkbox">{a.nomeColecao}
-                                                <input 
-                                                className="colecao_checkbox"
-                                                type="checkbox" 
-                                                name={a.nomeColecao} 
-                                                value={a.id}
-                                                onClick={e => {
-                                                    setColecoes(creatObjectsArrayByIds (
-                                                    addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
-                                                }}/>
+                                                <input
+                                                    type="checkbox"
+                                                    name={a.nomeColecao}
+                                                    value={a.id}
+                                                    onClick={e => {
+                                                        setColecoes(creatObjectsArrayByIds(
+                                                            addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
+                                                    }} />
                                                 <span className="span-checkbox"></span>
                                             </label>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                            
-                            <div id="tamanhos">
-                                <label htmlFor="tamanhos">Tamanhos</label>                                        
+                            </div> */}
+                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, 
+                                colecoes, "nomeColecao")}
+
+                            {/* <div id="tamanhos">
+                                <label htmlFor="tamanhos">Tamanhos</label>
                                 <div id="tabela-tamanhos" className="tabela-opcoes" name="tamanhos">
                                     {listaTamanhos.map((a, b) => (
                                         <div>
                                             <label className="container-checkbox">{a.descricao}
-                                                <input 
-                                                className="tamanho_checkbox"
-                                                type="checkbox" 
-                                                name={a.descricao} 
-                                                value={a.id}
-                                                onClick={e => {
-                                                    setTamanhosAceitos(creatObjectsArrayByIds (
-                                                    addOrRemoveItens(e, extractIdsFromObjectsArray(tamanhosAceitos))));
-                                                }}/>
+                                                <input
+                                                    className="tamanho_checkbox"
+                                                    type="checkbox"
+                                                    name={a.descricao}
+                                                    value={a.id}
+                                                    onClick={e => {
+                                                        setTamanhosAceitos(creatObjectsArrayByIds(
+                                                            addOrRemoveItens(e, extractIdsFromObjectsArray(tamanhosAceitos))));
+                                                    }} />
                                                 <span className="span-checkbox"></span>
                                             </label>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
+                            </div> */}
+                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, 
+                                tamanhosAceitos, "descricao")}
 
                             <div id="botao-submit">
                                 <button className='button' type="submit">Adicionar</button>
