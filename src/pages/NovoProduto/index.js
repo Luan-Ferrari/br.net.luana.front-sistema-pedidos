@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 import '../DefaultComponents/janelas.css';
 import '../DefaultComponents/boolean-button.css'
-import '../DefaultComponents/tabelas.css'
+import '../DefaultComponents/checkbox-container.css'
 import './styles.css';
 
 // import { MdCheckBox } from 'react-icons/md'
@@ -275,7 +275,7 @@ export default function NovoProduto() {
                                 tamanhosAceitos, "descricao")}
 
                             <div id="botao-submit">
-                                <button className='button' type="submit">Adicionar</button>
+                                <button type="submit">Adicionar</button>
                             </div>
                         </form>
                     </div>

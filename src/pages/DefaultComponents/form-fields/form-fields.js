@@ -66,7 +66,7 @@ export function checkboxListField(identificador, labelText, setter, atributoIden
     return (
         <div id={identificador}>
             <label htmlFor={identificador}>{labelText}</label>
-            <div className="tabela-opcoes" name={identificador}>
+            <div className="checkbox-opcoes" name={identificador}>
                 {listaOpcoes.map((a, b) => (
                     <div>
                         <label className="container-checkbox">{a[atributoNome]}

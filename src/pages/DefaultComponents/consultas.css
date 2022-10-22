@@ -1,0 +1,64 @@
+.conteudo-janela-padrao {
+    padding: 0;
+}
+
+.consulta-container {
+    display: grid;
+    
+}
+
+/* .consulta-container > div {
+    margin: 15px;
+} */
+
+.inputs-consultas label,
+input {
+    display: block;
+}
+
+.inputs-consultas div {
+    margin: 15px 25px 0px 0px;
+}
+
+.botoes-consultas {
+    margin: 15px 25px 0px 25px;
+}
+
+.filtros-consultas {
+    margin: 15px 0px 0px 25px;
+}
+
+.botoes-consultas div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, auto));
+}
+
+.botoes-consultas label {
+    display: inline;
+}
+
+.botao-consulta {
+    width: 100%;
+    padding: 1px;
+    font-size: 15px;
+}
+
+.filtros-consultas div {
+    position: relative;
+    display: block;
+    top: -6px;
+    left: -8px;
+    margin-bottom: 6px;
+}
+
+.filtros-consultas select,
+.checkbox-opcoes {
+    height: 30px;
+    padding: 0;
+    margin-top: 2px;
+
+}
+
+.select-in-filter {
+    margin: 20px 0 10px 8px;
+}

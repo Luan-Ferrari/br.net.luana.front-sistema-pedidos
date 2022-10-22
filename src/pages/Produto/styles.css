@@ -1,0 +1,18 @@
+.consulta-container {
+    grid-template-areas: 
+    'inputs botoes botoes opcoes ';
+}
+
+
+.inputs-consultas {
+    grid-area: inputs;
+}
+
+.botoes-consultas { 
+    grid-area: botoes;
+}
+
+.opcoes-consultas {
+    grid-area: opcoes;
+}
+

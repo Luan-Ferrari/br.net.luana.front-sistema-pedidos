@@ -26,5 +26,30 @@
 }
 
 .conteudo-janela-padrao {
-    padding: 0 12px 12px 12px;
+    padding: 0px 12px 12px 12px;
+}
+
+.espaco-botoes-acoes {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+    margin: 20px 5px 20px 10px;
+    padding-right: 20px;
+    justify-content: space-between;
+}
+
+.espaco-botoes-acoes button {
+    font-size: 16px;
+    letter-spacing: 1.2px;
+    height: 44px;
+}
+
+.icon {
+    display: inline-block;
+    margin: 10px 7px -4px 0;
+    font-size: 20px;
+}
+
+.texto-botao-acao {
+    display: inline-block;    
 }

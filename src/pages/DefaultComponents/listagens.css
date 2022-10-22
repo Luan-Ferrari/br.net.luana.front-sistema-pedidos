@@ -1,0 +1,43 @@
+.listagem-itens table {
+    text-align: left;
+    width: 100%;
+}
+
+.listagem-itens table th {
+    padding: 5px 10px 5px 10px;
+    background-color: #676767;
+    color: #ffffff;
+}
+
+.listagem-itens table td {
+    padding: 0px 10px 0px 10px;
+    line-height: 15px;
+    font-size: 16px;
+}
+
+.listagem-itens td .span-checkbox {
+    top: -21px;
+    width: 16px;
+    height: 16px;
+    
+}
+
+.listagem-itens table tbody tr :first-child {
+    width: auto;
+}
+
+tr:nth-child(even) {
+    background: lightgrey;
+  }
+
+.listagem-itens table tbody td button {
+    display: inline-block;
+    color: #3d2927;
+    font-size: 25px;
+    width: auto;
+    background-color: transparent;
+    border: none;
+    margin-right: 10px;
+    margin-top: -1px;
+    height: 25px;
+}

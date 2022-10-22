@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom'
-import { FiPower, FiEdit, FiTrash2 } from 'react-icons/fi'
+import { useNavigate, Link } from 'react-router-dom';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import {
+    BiMessageSquareAdd, BiMessageSquareCheck, BiMessageSquareDots,
+    BiMessageSquareDetail, BiMessageSquareEdit, BiMessageSquareX, BiMessageSquareError
+} from 'react-icons/bi';
+import { IoMdAddCircleOutline } from 'react-icons/io';
 
+import "../DefaultComponents/consultas.css";
 import '../DefaultComponents/janelas.css';
+import '../DefaultComponents/listagens.css';
 import './styles.css';
 
 import { createDefaultHeader } from '../DefaultComponents/header/header';
@@ -27,6 +34,10 @@ export default function Produtos() {
 
     const [parametrosConsulta, setParametrosConsulta] = useState([]);
 
+    const [classesProdutos, setClassesProdutos] = useState([]);
+    const [colecoes, setColecoes] = useState([]);
+    const [viewColecao, setViewColecao] = useState([]);
+
     const navigate = useNavigate();
 
     async function loadProdutos() {
@@ -37,8 +48,25 @@ export default function Produtos() {
             })
     }
 
+    async function loadClassesProdutos() {
+        await api.get('/classeProduto', header)
+            .then(response => {
+                setClassesProdutos(response.data)
+            })
+    }
+
+    async function loadColecoes() {
+        await api.get('/colecao', header)
+            .then(response => {
+                setClassesProdutos(response.data)
+            })
+    }
+
+
     useEffect(() => {
         loadProdutos();
+        loadClassesProdutos();
+        loadColecoes();
     }, [])
 
     return (
@@ -59,26 +87,143 @@ export default function Produtos() {
                     <div className='barra-titulo-janela-padrao'>
                         <p>Consultas</p>
                     </div>
-                    <div className='inputs-consultas'>
-                        <div>
-                            <label htmlFor="consulta-id">Código</label>
-                            <input
-                                name="consulta-id"
-                                // className={classe}
-                                // value={value}
-                                onChange={e => setListaFiltrada(pesquisador(listaCompleta, 'codigoProduto', e.target.value))}
-                            //criar uma lista de parametros com objetos do tipo chave : valor, então iterar
-                            //a lista completa, iniciando pelo primeiro parametro selecionado
-                            //não sei se é uma boa opção, estou olhando o método filter(), talvez seja mais viável
-                            />
+                    <div className="conteudo-janela-padrao">
+                        <div className="consulta-container">
+                            <div className='inputs-consultas'>
+                                <div>
+                                    <label htmlFor="consulta-codigo">Código:</label>
+                                    <input
+                                        name="consulta-codigo"
+                                        // className={classe}
+                                        // value={value}
+                                        onChange={e => setListaFiltrada(pesquisador(listaCompleta, 'codigoProduto', e.target.value))}
+                                    //criar uma lista de parametros com objetos do tipo chave : valor, então iterar
+                                    //a lista completa, iniciando pelo primeiro parametro selecionado
+                                    //não sei se é uma boa opção, estou olhando o método filter(), talvez seja mais viável
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="consulta-descricao">Descricao:</label>
+                                    <input
+                                        name="consulta-descricao"
+                                        // className={classe}
+                                        // value={value}
+                                        onChange={e => setListaFiltrada(pesquisador(listaCompleta, 'codigoProduto', e.target.value))}
+                                    //criar uma lista de parametros com objetos do tipo chave : valor, então iterar
+                                    //a lista completa, iniciando pelo primeiro parametro selecionado
+                                    //não sei se é uma boa opção, estou olhando o método filter(), talvez seja mais viável
+                                    />
+                                </div>
+                            </div>
+
+                            <div className='botoes-consultas'>
+                                <label>Buscar por:</label>
+                                <div>
+                                    {classesProdutos.map((a, b) => (
+                                        <div>
+                                            <button className="botao-consulta">{a.nomeClasse}
+                                                {/* <input
+                                                type="checkbox"
+                                                // name={a[atributoNome]}
+                                                // value={a[atributoIdentificador]}
+                                                // onClick={e => {
+                                                //     setter(creatObjectsArrayByIds(
+                                                //         addOrRemoveItens(e, extractIdsFromObjectsArray(listaSelecionados))))
+                                                // }} />
+                                                /> */}
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className='filtros-consultas'>
+                                <label>Filtros:</label>
+                                <div>
+                                    <label className="container-checkbox">Infantil
+                                        <input
+                                            type="checkbox"
+                                            name="infantil"
+                                            value="2"
+                                        // onClick={e => {
+                                        //     setColecoes(creatObjectsArrayByIds(
+                                        //         addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
+                                        // }} 
+                                        />
+                                        <span className="span-checkbox"></span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label className="container-checkbox">Adulto
+                                        <input
+                                            type="checkbox"
+                                            name="adulto"
+                                            value="1"
+                                        // onClick={e => {
+                                        //     setColecoes(creatObjectsArrayByIds(
+                                        //         addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
+                                        // }} 
+                                        />
+                                        <span className="span-checkbox"></span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label className="container-checkbox">Conjunto
+                                        <input
+                                            type="checkbox"
+                                            name="conjunto"
+                                            value="true"
+                                        // onClick={e => {
+                                        //     setColecoes(creatObjectsArrayByIds(
+                                        //         addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
+                                        // }} 
+                                        />
+                                        <span className="span-checkbox"></span>
+                                    </label>
+                                </div>
+                                <div className='select-in-filter'>
+                                    <label htmlFor="colecao">Coleção: </label>
+                                    <select
+                                        name="colecao"
+                                        value={viewColecao}
+                                        onChange={e => {
+                                            // setStatusProduto({ id: e.target.value })
+                                            setViewColecao(e.target.value)
+                                        }}
+                                    >
+                                        <option value=""></option>
+                                        {colecoes.map((a, b) => (
+                                            <option value={a.id}>{a.nomeColecao}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                    <div className='botoes-consultas'>
+                </div>
 
-                    </div>
-                    <div className='filtros-consultas'>
-
-                    </div>
+                <div className='espaco-botoes-acoes'>
+                    <button>
+                        <BiMessageSquareAdd className='icon' />
+                        <span>Criar Produto</span>
+                    </button>
+                    <button>
+                        <BiMessageSquareDots className='icon' />
+                        <span>Alterar Relação</span>
+                    </button>
+                    <button>
+                        <BiMessageSquareCheck className='icon' />
+                        <span>Alterar Seleção</span>
+                    </button>
+                    <button>
+                        <BiMessageSquareDetail className='icon' />
+                        <span>Relatório</span>
+                    </button>
+                    <button>
+                        <BiMessageSquareError className='icon' />
+                        <span>Sem Função</span>
+                    </button>
                 </div>
 
                 <div className="janela-padrao">
@@ -88,27 +233,46 @@ export default function Produtos() {
 
 
                     <div className="conteudo-janela-padrao">
-                        <ul>
-                            {listaFiltrada.map((a) => (
-                                <li>
-                                    <strong>Codigo:</strong>
-                                    <p>{a.codigoProduto}</p>
-                                    <strong>Descrição:</strong>
-                                    <p>{a.descricao}</p>
-                                    <strong>Preço Atacado:</strong>
-                                    <p></p>
-                                    <strong>Release Date:</strong>
-                                    <p>12/07/2017</p>
-
-                                    <button type="button">
-                                        <FiEdit size={20} color="#251fc5" />
-                                    </button>
-                                    <button type="button">
-                                        <FiTrash2 size={20} color="#251fc5" />
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                        <div className='listagem-itens'>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th> </th>
+                                        <th>Código</th>
+                                        <th>Descrição</th>
+                                        <th>Atacado</th>
+                                        <th>Varejo</th>
+                                        <th>Classe</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {listaFiltrada.map((a) => (
+                                        <tr>
+                                            <td>
+                                                <label className='container-checkbox'>
+                                                    <input type="checkbox"/>
+                                                    <span className='span-checkbox'></span>
+                                                </label>
+                                            </td>
+                                            <td>{a.codigoProduto}</td>
+                                            <td>{a.descricao}</td>
+                                            <td>{a.valorAtacado}</td>
+                                            <td>{a.valorVarejo}</td>
+                                            <td>{a.classeProduto.nomeClasse}</td>
+                                            <td>
+                                                <button type="button">
+                                                    <BiMessageSquareEdit />
+                                                </button>
+                                                <button type="button">
+                                                    <BiMessageSquareX />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
