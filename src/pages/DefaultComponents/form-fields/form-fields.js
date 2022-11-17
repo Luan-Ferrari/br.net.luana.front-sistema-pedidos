@@ -15,19 +15,37 @@ export function defaultField(identificador, labelText, classe, value, setter) {
     )
 }
 
+// export function booleanButtonField(identificador, labelText, textoOpcaoUm, textoOpcaoDois, setter) {
+//     return (
+//         <div className="boolean-button-container" id={identificador}>
+//             <label>{labelText}</label>
+//             <div className="boolean-button">
+//                 <input type="radio" id="opcao-um" name={identificador}
+//                     onClick={e => setter(true)} />
+//                 <label className="botao-um" htmlFor='opcao-um'>{textoOpcaoUm}</label>
+//             </div>
+//             <div className="boolean-button">
+//                 <input type="radio" id="opcao-dois" name={identificador}
+//                     onClick={e => setter(false)} />
+//                 <label className="botao-dois" htmlFor='opcao-dois'>{textoOpcaoDois}</label>
+//             </div>
+//         </div>
+//     )
+// }
+
 export function booleanButtonField(identificador, labelText, textoOpcaoUm, textoOpcaoDois, setter) {
     return (
         <div className="boolean-button-container" id={identificador}>
             <label>{labelText}</label>
             <div className="boolean-button">
-                <input type="radio" id="opcao-um" name={identificador}
+                <input type="radio" id={textoOpcaoUm} name={identificador}
                     onClick={e => setter(true)} />
-                <label className="botao-um" htmlFor='opcao-um'>{textoOpcaoUm}</label>
+                <label className="botao-um" htmlFor={textoOpcaoUm}>{textoOpcaoUm}</label>
             </div>
             <div className="boolean-button">
-                <input type="radio" id="opcao-dois" name={identificador}
+                <input type="radio" id={textoOpcaoDois} name={identificador}
                     onClick={e => setter(false)} />
-                <label className="botao-dois" htmlFor='opcao-dois'>{textoOpcaoDois}</label>
+                <label className="botao-dois" htmlFor={textoOpcaoDois}>{textoOpcaoDois}</label>
             </div>
         </div>
     )

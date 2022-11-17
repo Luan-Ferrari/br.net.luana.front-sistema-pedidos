@@ -1,10 +1,10 @@
 .conteudo-janela-padrao form{
     display: grid;
     grid-template-areas: 
-    'codigo descricao descricao descricao conjunto'
-    'atacado varejo status classe classe'
-    'colecoes colecoes colecoes tamanhos tamanhos'
-    '. . . . submit';
+    'codigo descricao descricao descricao adulto conjunto'
+    '. atacado varejo status classe classe'
+    'colecoes colecoes colecoes tamanhos tamanhos tamanhos'
+    '. . . . . submit';
 }
 
 
@@ -17,8 +17,11 @@
 }
 
 #conjunto {
-    grid-area: conjunto;
-    
+    grid-area: conjunto; 
+}
+
+#adulto {
+    grid-area: adulto; 
 }
 
 #valor-atacado {

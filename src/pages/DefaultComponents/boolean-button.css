@@ -1,5 +1,6 @@
 .boolean-button-container{
     min-width: 120px;
+    width: 100%;
 }
 
 .boolean-button {

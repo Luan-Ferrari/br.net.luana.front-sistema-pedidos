@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import {
@@ -14,7 +14,7 @@ import './styles.css';
 
 import { createDefaultHeader } from '../DefaultComponents/header/header';
 
-import { pesquisador } from '../DefaultComponents/manipuladores/pesquisador';
+import { pesquisador, pesquisadorComplexo, pesquisadorFiltrosBotoes, pesquisadorSimples, pesquisadorString, pesquisadorSubAtributo } from '../DefaultComponents/manipuladores/pesquisador';
 
 import api from '../../services/api';
 
@@ -30,13 +30,37 @@ export default function Produtos() {
 
     const [listaCompleta, setListaCompleta] = useState([]);
 
-    const [listaFiltrada, setListaFiltrada] = useState([]);
-
-    const [parametrosConsulta, setParametrosConsulta] = useState([]);
-
     const [classesProdutos, setClassesProdutos] = useState([]);
     const [colecoes, setColecoes] = useState([]);
     const [viewColecao, setViewColecao] = useState([]);
+
+    
+
+    //DAQUI PRA BAIXO LÓGICA PARA CONSULTAS //
+    //Talves esses useStates para cada parametro não sejam necessários
+    const [consultaCodigo, setConsultaCodigo] = useState('');
+    const [consultaDescricao, setConsultaDescricao] = useState('');
+    // const [consultaClasses, setConsultaClasses] = useState([]);
+    // const [consultaAdulo, setConsultaAdulto] = useState('');
+    // const [consultaStatus, setConsultaStatus] = useState("Ativo");
+    // const [consultaConjunto, setConsultaConjunto] = useState('');
+    // const [consultaColecao, setConsultaColecao] = useState('');
+
+    //talvez a lista eu precise trocar por um array e não um obj
+    let listaParametrosConsulta = {
+        codigoProduto: consultaCodigo,
+        descricao: consultaDescricao,
+        // classes: [],
+        // adulto: '',
+        // status: 'Ativo',
+        // conjunto: '',
+        // colecao: ''
+    };
+
+    let listaFiltrada = pesquisadorComplexo(listaCompleta, listaParametrosConsulta);
+  
+
+    //DAQUI PRA CIMA, LÓGICA PARA CONSULTAS //
 
     const navigate = useNavigate();
 
@@ -44,7 +68,6 @@ export default function Produtos() {
         await api.get('/produto', header)
             .then(response => {
                 setListaCompleta(response.data)
-                setListaFiltrada(response.data)
             })
     }
 
@@ -58,7 +81,7 @@ export default function Produtos() {
     async function loadColecoes() {
         await api.get('/colecao', header)
             .then(response => {
-                setClassesProdutos(response.data)
+                setColecoes(response.data)
             })
     }
 
@@ -68,6 +91,8 @@ export default function Produtos() {
         loadClassesProdutos();
         loadColecoes();
     }, [])
+
+ 
 
     return (
         <div className="page-container">
@@ -94,12 +119,8 @@ export default function Produtos() {
                                     <label htmlFor="consulta-codigo">Código:</label>
                                     <input
                                         name="consulta-codigo"
-                                        // className={classe}
-                                        // value={value}
-                                        onChange={e => setListaFiltrada(pesquisador(listaCompleta, 'codigoProduto', e.target.value))}
-                                    //criar uma lista de parametros com objetos do tipo chave : valor, então iterar
-                                    //a lista completa, iniciando pelo primeiro parametro selecionado
-                                    //não sei se é uma boa opção, estou olhando o método filter(), talvez seja mais viável
+                                        value={consultaCodigo}
+                                        onChange={e => setConsultaCodigo(e.target.value)}
                                     />
                                 </div>
 
@@ -107,12 +128,7 @@ export default function Produtos() {
                                     <label htmlFor="consulta-descricao">Descricao:</label>
                                     <input
                                         name="consulta-descricao"
-                                        // className={classe}
-                                        // value={value}
-                                        onChange={e => setListaFiltrada(pesquisador(listaCompleta, 'codigoProduto', e.target.value))}
-                                    //criar uma lista de parametros com objetos do tipo chave : valor, então iterar
-                                    //a lista completa, iniciando pelo primeiro parametro selecionado
-                                    //não sei se é uma boa opção, estou olhando o método filter(), talvez seja mais viável
+                                        onChange={e => setConsultaDescricao(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -122,64 +138,113 @@ export default function Produtos() {
                                 <div>
                                     {classesProdutos.map((a, b) => (
                                         <div>
-                                            <button className="botao-consulta">{a.nomeClasse}
-                                                {/* <input
-                                                type="checkbox"
-                                                // name={a[atributoNome]}
-                                                // value={a[atributoIdentificador]}
-                                                // onClick={e => {
-                                                //     setter(creatObjectsArrayByIds(
-                                                //         addOrRemoveItens(e, extractIdsFromObjectsArray(listaSelecionados))))
-                                                // }} />
-                                                /> */}
+                                            <button className="botao-consulta"
+                                                value={a.nomeClasse}
+                                                onClick={e =>{} }>
+                                                {a.nomeClasse}
                                             </button>
                                         </div>
                                     ))}
                                 </div>
                             </div>
+
                             <div className='filtros-consultas'>
                                 <label>Filtros:</label>
-                                <div>
-                                    <label className="container-checkbox">Infantil
-                                        <input
-                                            type="checkbox"
-                                            name="infantil"
-                                            value="2"
-                                        // onClick={e => {
-                                        //     setColecoes(creatObjectsArrayByIds(
-                                        //         addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
-                                        // }} 
-                                        />
-                                        <span className="span-checkbox"></span>
-                                    </label>
+                                <div className="radio-container" id="radio-1">
+                                    <div>
+                                        <label className="container-checkbox">Infantil
+                                            <input
+                                                type="radio"
+                                                name="adulto-ou-infantil"
+                                                onClick={e => {
+                                                    
+                                                }}
+                                            />
+                                            <span className="span-checkbox"></span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label className="container-checkbox">Adulto
+                                            <input
+                                                type="radio"
+                                                name="adulto-ou-infantil"
+                                                onClick={e => {
+                                                    
+                                                }}
+                                            />
+                                            <span className="span-checkbox"></span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label className="container-checkbox">Ambos
+                                            <input
+                                                checked
+                                                type="radio"
+                                                name="adulto-ou-infantil"
+                                                onClick={e => {
+                                                    
+                                                }}
+                                            />
+                                            <span className="span-checkbox"></span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="container-checkbox">Adulto
-                                        <input
-                                            type="checkbox"
-                                            name="adulto"
-                                            value="1"
-                                        // onClick={e => {
-                                        //     setColecoes(creatObjectsArrayByIds(
-                                        //         addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
-                                        // }} 
-                                        />
-                                        <span className="span-checkbox"></span>
-                                    </label>
+
+                                <div className="radio-container" id="radio-2">
+                                    <div>
+                                        <label className="container-checkbox">Ativo
+                                            <input
+                                                checked
+                                                type="radio"
+                                                name="ativo-ou-inativo"
+                                                onClick={e => {
+                                                    
+                                                }}
+                                            />
+                                            <span className="span-checkbox"></span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label className="container-checkbox">Inativo
+                                            <input
+                                                type="radio"
+                                                name="ativo-ou-inativo"
+                                                onClick={e => {
+                                                    
+                                                }}
+                                            />
+                                            <span className="span-checkbox"></span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label className="container-checkbox">Desenvolvimento
+                                            <input
+                                                type="radio"
+                                                name="ativo-ou-inativo"
+                                                onClick={e => {
+                                                    
+                                                }}
+                                            />
+                                            <span className="span-checkbox"></span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="container-checkbox">Conjunto
-                                        <input
-                                            type="checkbox"
-                                            name="conjunto"
-                                            value="true"
-                                        // onClick={e => {
-                                        //     setColecoes(creatObjectsArrayByIds(
-                                        //         addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
-                                        // }} 
-                                        />
-                                        <span className="span-checkbox"></span>
-                                    </label>
+
+                                <div className="radio-container">
+                                    <div>
+                                        <label className="container-checkbox">Conjunto
+                                            <input
+                                                type="checkbox"
+                                                name="conjunto"
+                                                value="true"
+                                            // onClick={e => {
+                                            //     setColecoes(creatObjectsArrayByIds(
+                                            //         addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
+                                            // }} 
+                                            />
+                                            <span className="span-checkbox"></span>
+                                        </label>
+                                    </div>
                                 </div>
                                 <div className='select-in-filter'>
                                     <label htmlFor="colecao">Coleção: </label>
@@ -187,7 +252,6 @@ export default function Produtos() {
                                         name="colecao"
                                         value={viewColecao}
                                         onChange={e => {
-                                            // setStatusProduto({ id: e.target.value })
                                             setViewColecao(e.target.value)
                                         }}
                                     >
@@ -231,7 +295,6 @@ export default function Produtos() {
                         <p>Produtos</p>
                     </div>
 
-
                     <div className="conteudo-janela-padrao">
                         <div className='listagem-itens'>
                             <table>
@@ -240,8 +303,9 @@ export default function Produtos() {
                                         <th> </th>
                                         <th>Código</th>
                                         <th>Descrição</th>
+                                        <th>Tamanhos</th>
                                         <th>Atacado</th>
-                                        <th>Varejo</th>
+                                        <th>letejo</th>
                                         <th>Classe</th>
                                         <th>Ações</th>
                                     </tr>
@@ -251,14 +315,15 @@ export default function Produtos() {
                                         <tr>
                                             <td>
                                                 <label className='container-checkbox'>
-                                                    <input type="checkbox"/>
+                                                    <input type="checkbox" />
                                                     <span className='span-checkbox'></span>
                                                 </label>
                                             </td>
                                             <td>{a.codigoProduto}</td>
                                             <td>{a.descricao}</td>
+                                            <td>{a.adulto == true ? "Adulto" : "Infantil"}</td>
                                             <td>{a.valorAtacado}</td>
-                                            <td>{a.valorVarejo}</td>
+                                            <td>{a.valorletejo}</td>
                                             <td>{a.classeProduto.nomeClasse}</td>
                                             <td>
                                                 <button type="button">

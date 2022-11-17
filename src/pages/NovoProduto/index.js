@@ -27,6 +27,7 @@ export default function NovoProduto() {
     const [codigoProduto, setCodigoProduto] = useState('');
     const [descricao, setDescricao] = useState('');
     const [conjunto, setConjunto] = useState('');
+    const [adulto, setAdulto] = useState('');
     const [valorAtacado, setValorAtacado] = useState('');
     const [valorVarejo, setValorVarejo] = useState('');
 
@@ -86,6 +87,7 @@ export default function NovoProduto() {
             valorAtacado,
             valorVarejo,
             statusProduto,
+            adulto,
             classeProduto,
             colecoes,
             tamanhosAceitos,
@@ -168,6 +170,9 @@ export default function NovoProduto() {
                                 </div>
                             </div>    */}
                             {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
+
+                            {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
+
 
                             {/* <div id="valor-atacado">
                                 <label htmlFor="valor-atacado">Valor Atacado</label>

@@ -43,12 +43,25 @@ input {
     font-size: 15px;
 }
 
-.filtros-consultas div {
+.filtros-consultas > .radio-container {
     position: relative;
-    display: block;
-    top: -6px;
+    display: inline-block;
+    top: -4px;
     left: -8px;
+    margin-bottom: 9px;
+    width: auto;
+    height: auto;
+    padding-bottom: 10px;
+    
+}
+
+.filtros-consultas > label {
+    display: block;
+}
+
+.filtros-consultas div {
     margin-bottom: 6px;
+    margin-right: 15px;
 }
 
 .filtros-consultas select,
@@ -60,5 +73,9 @@ input {
 }
 
 .select-in-filter {
-    margin: 20px 0 10px 8px;
+    margin: 10px 0 10px 0;
+}
+
+#radio-2 {
+    background-color: rgb(201, 201, 201);
 }

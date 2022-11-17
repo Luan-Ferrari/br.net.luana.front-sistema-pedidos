@@ -5,7 +5,7 @@ import { TbPower } from 'react-icons/tb'
 
 import './header.css';
 
-var date = new Date();
+let date = new Date();
 
 export function createDefaultHeader() {
     return (
