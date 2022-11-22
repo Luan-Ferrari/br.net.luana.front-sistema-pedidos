@@ -1,9 +1,11 @@
+import { type } from "@testing-library/user-event/dist/type";
+
 export function pesquisadorSimples(lista, atributo, parametro) {
 
     let listaAuxiliar = [];
 
     for (let i = 0; i < lista.length; i++) {
-        if (lista[i][atributo] != null) {            
+        if (lista[i][atributo] != null) {
             if (lista[i][atributo].toString().toLowerCase().includes(parametro.toString().toLowerCase())) {
                 listaAuxiliar.push(lista[i]);
             }
@@ -36,22 +38,52 @@ export function pesquisadorComplexo(listaCompleta, listaParametros) {
     let quantidadeLista = listaCompleta.length;
     let quantidadeChaves = chaves.length;
 
+    //console.log(chaves);
+    //console.log(valores);
+
     for (let i = 0; i < quantidadeLista; i++) {
+
+        //console.log(listaCompleta[i]);
 
         let apto = true;
         let j = 0;
 
-        while ( apto == true && j < quantidadeChaves ) {
+        while (apto == true && j < quantidadeChaves) {
 
-            if(listaCompleta[i][chaves[j]] != null && valores[j] != undefined) {
-                if(!(listaCompleta[i][chaves[j]].toString().toLowerCase().includes(valores[j].toString().toLowerCase()))) {
-                    apto = false;
+            let possuiSubatributoId = false;
+
+            if (listaCompleta[i][chaves[j]].id !== undefined) {
+                possuiSubatributoId = true;
+            }
+
+            if (possuiSubatributoId) {
+                //console.log(listaCompleta[i][chaves[j]].id)
+                //console.log(valores[j].id)
+                if (listaCompleta[i][chaves[j]].id != null && valores[j].id != '' && valores[j].id != undefined) {
+                    if (!(listaCompleta[i][chaves[j]].id.toString().toLowerCase() == (valores[j].id.toString().toLowerCase()))) {
+                        apto = false;
+                        //console.log('nao adicionou pelo id');
+                    } else {
+                        //console.log("adicionou pelo id");
+                    }
+                }
+            } else {
+                if (listaCompleta[i][chaves[j]] != null && valores[j] != undefined) {
+                    //console.log(listaCompleta[i][chaves[j]])
+                    //console.log(valores[j])
+                    if (!(listaCompleta[i][chaves[j]].toString().toLowerCase().includes(valores[j].toString().toLowerCase()))) {
+                        apto = false;
+                        //console.log('nao adicionou');
+                    } else {
+                        //console.log("adicionou");
+                    }
                 }
             }
+            
             j++;
         }
 
-        if (apto) { 
+        if (apto) {
             listaFiltrada.push(listaCompleta[i])
         }
     }
@@ -59,7 +91,7 @@ export function pesquisadorComplexo(listaCompleta, listaParametros) {
     return listaFiltrada;
 }
 
-//*****ATENÇÃO ATENÇÃO ATENÇÃO 
+//*****ATENÇÃO ATENÇÃO ATENÇÃO
 //FAZER O MÉTODO DE FILTRAGEM CRIAR DUAS LISTAS, SENDO UMA LISTAFILTRADA, E UMA LISTADESCARTES.
 //ESSE METODO DEVE ANALIZAR A LISTAFILTRADA E TAMBÉM A LISTA DE DESCARTES, MAS CADA
 //FONTE DE PARAMETROS PARA O FILTRO VAI SE COMPORTAR DE FORMAS DIFERENTES,

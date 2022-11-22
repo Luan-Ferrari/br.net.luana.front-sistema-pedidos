@@ -40,7 +40,7 @@ export default function Produtos() {
     //Talves esses useStates para cada parametro não sejam necessários
     const [consultaCodigo, setConsultaCodigo] = useState('');
     const [consultaDescricao, setConsultaDescricao] = useState('');
-    // const [consultaClasses, setConsultaClasses] = useState([]);
+    const [consultaClasse, setConsultaClasse] = useState('');
     // const [consultaAdulo, setConsultaAdulto] = useState('');
     // const [consultaStatus, setConsultaStatus] = useState("Ativo");
     // const [consultaConjunto, setConsultaConjunto] = useState('');
@@ -50,7 +50,9 @@ export default function Produtos() {
     let listaParametrosConsulta = {
         codigoProduto: consultaCodigo,
         descricao: consultaDescricao,
-        // classes: [],
+        classeProduto : {
+            id: consultaClasse
+        },
         // adulto: '',
         // status: 'Ativo',
         // conjunto: '',
@@ -139,8 +141,8 @@ export default function Produtos() {
                                     {classesProdutos.map((a, b) => (
                                         <div>
                                             <button className="botao-consulta"
-                                                value={a.nomeClasse}
-                                                onClick={e =>{} }>
+                                                value={a.id}
+                                                onClick={e => setConsultaClasse(e.target.value) }>
                                                 {a.nomeClasse}
                                             </button>
                                         </div>
@@ -305,7 +307,7 @@ export default function Produtos() {
                                         <th>Descrição</th>
                                         <th>Tamanhos</th>
                                         <th>Atacado</th>
-                                        <th>letejo</th>
+                                        <th>Varejo</th>
                                         <th>Classe</th>
                                         <th>Ações</th>
                                     </tr>
@@ -323,7 +325,7 @@ export default function Produtos() {
                                             <td>{a.descricao}</td>
                                             <td>{a.adulto == true ? "Adulto" : "Infantil"}</td>
                                             <td>{a.valorAtacado}</td>
-                                            <td>{a.valorletejo}</td>
+                                            <td>{a.valorVarejo}</td>
                                             <td>{a.classeProduto.nomeClasse}</td>
                                             <td>
                                                 <button type="button">

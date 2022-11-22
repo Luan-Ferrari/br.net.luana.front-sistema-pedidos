@@ -1,18 +1,18 @@
 export function buildData(date) {
-    var diasSemana = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
-    var diaSemana = date.getDay();
-    var dia = dataComDoisDigitos(date.getDate());
-    var mes = dataComDoisDigitos(date.getMonth() + 1);
-    var ano = dataComDoisDigitos(date.getFullYear());
-    var data = diasSemana[diaSemana] + ", " + dia + "/" + mes + "/" + ano;
+    let diasSemana = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
+    let diaSemana = date.getDay();
+    let dia = dataComDoisDigitos(date.getDate());
+    let mes = dataComDoisDigitos(date.getMonth() + 1);
+    let ano = dataComDoisDigitos(date.getFullYear());
+    let data = diasSemana[diaSemana] + ", " + dia + "/" + mes + "/" + ano;
     return data;
 }
 
 export function buildHorario(date) {
-    var hora = dataComDoisDigitos(date.getHours());
-    var minuto = dataComDoisDigitos(date.getMinutes());
-    var segundo = dataComDoisDigitos(date.getSeconds());
-    var horario = hora + ":" + minuto + ":" + segundo;
+    let hora = dataComDoisDigitos(date.getHours());
+    let minuto = dataComDoisDigitos(date.getMinutes());
+    let segundo = dataComDoisDigitos(date.getSeconds());
+    let horario = hora + ":" + minuto + ":" + segundo;
 
     return horario;
 }
@@ -26,6 +26,6 @@ function dataComDoisDigitos(valor) {
 }
 
 export function buildSaudacao() {
-    var saudacao = "Olá, " + localStorage.usuario;
+    let saudacao = "Olá, " + localStorage.usuario;
     return saudacao;
 }
