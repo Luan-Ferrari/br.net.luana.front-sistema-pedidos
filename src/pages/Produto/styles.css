@@ -8,7 +8,7 @@
     grid-area: inputs;
 }
 
-.botoes-consultas { 
+.botoes-consultas-container { 
     grid-area: botoes;
 }
 

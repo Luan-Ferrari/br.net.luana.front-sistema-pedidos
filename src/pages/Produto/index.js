@@ -34,14 +34,14 @@ export default function Produtos() {
     const [colecoes, setColecoes] = useState([]);
     const [viewColecao, setViewColecao] = useState([]);
 
-    
+
 
     //DAQUI PRA BAIXO LÓGICA PARA CONSULTAS //
     //Talves esses useStates para cada parametro não sejam necessários
     const [consultaCodigo, setConsultaCodigo] = useState('');
     const [consultaDescricao, setConsultaDescricao] = useState('');
     const [consultaClasse, setConsultaClasse] = useState('');
-    // const [consultaAdulo, setConsultaAdulto] = useState('');
+    const [consultaAdulto, setConsultaAdulto] = useState('');
     // const [consultaStatus, setConsultaStatus] = useState("Ativo");
     // const [consultaConjunto, setConsultaConjunto] = useState('');
     // const [consultaColecao, setConsultaColecao] = useState('');
@@ -50,17 +50,17 @@ export default function Produtos() {
     let listaParametrosConsulta = {
         codigoProduto: consultaCodigo,
         descricao: consultaDescricao,
-        classeProduto : {
+        classeProduto: {
             id: consultaClasse
         },
-        // adulto: '',
+        adulto: consultaAdulto,
         // status: 'Ativo',
         // conjunto: '',
         // colecao: ''
     };
 
     let listaFiltrada = pesquisadorComplexo(listaCompleta, listaParametrosConsulta);
-  
+
 
     //DAQUI PRA CIMA, LÓGICA PARA CONSULTAS //
 
@@ -94,7 +94,6 @@ export default function Produtos() {
         loadColecoes();
     }, [])
 
- 
 
     return (
         <div className="page-container">
@@ -135,16 +134,24 @@ export default function Produtos() {
                                 </div>
                             </div>
 
-                            <div className='botoes-consultas'>
+                            <div className='botoes-consultas-container'>
                                 <label>Buscar por:</label>
                                 <div>
-                                    {classesProdutos.map((a, b) => (
-                                        <div>
-                                            <button className="botao-consulta"
+                                    {classesProdutos.map((a) => (
+                                        <div className='botoes-consultas-seletor'>
+                                            <input
+                                                type="radio"
+                                                name='botoes-consultas-itens'
+                                                id={'radio-classes'+a.id}
+                                                className='botoes-consultas-itens-radio'
                                                 value={a.id}
-                                                onClick={e => setConsultaClasse(e.target.value) }>
+                                                onClick={e => setConsultaClasse(e.target.value)}>
+                                            </input>
+                                            <label
+                                                htmlFor={'radio-classes'+a.id}
+                                                className='botoes-consultas-itens-label'>
                                                 {a.nomeClasse}
-                                            </button>
+                                            </label>
                                         </div>
                                     ))}
                                 </div>
@@ -152,15 +159,14 @@ export default function Produtos() {
 
                             <div className='filtros-consultas'>
                                 <label>Filtros:</label>
-                                <div className="radio-container" id="radio-1">
+                                <div className="radio-container">
                                     <div>
-                                        <label className="container-checkbox">Infantil
+                                        <label className="container-checkbox">Ambos
                                             <input
+                                                checked
                                                 type="radio"
                                                 name="adulto-ou-infantil"
-                                                onClick={e => {
-                                                    
-                                                }}
+                                                onClick={e => setConsultaAdulto('')}
                                             />
                                             <span className="span-checkbox"></span>
                                         </label>
@@ -170,22 +176,17 @@ export default function Produtos() {
                                             <input
                                                 type="radio"
                                                 name="adulto-ou-infantil"
-                                                onClick={e => {
-                                                    
-                                                }}
+                                                onClick={e => setConsultaAdulto(true)}
                                             />
                                             <span className="span-checkbox"></span>
                                         </label>
                                     </div>
                                     <div>
-                                        <label className="container-checkbox">Ambos
+                                        <label className="container-checkbox">Infantil
                                             <input
-                                                checked
                                                 type="radio"
                                                 name="adulto-ou-infantil"
-                                                onClick={e => {
-                                                    
-                                                }}
+                                                onClick={e => setConsultaAdulto(false)}
                                             />
                                             <span className="span-checkbox"></span>
                                         </label>
@@ -200,7 +201,7 @@ export default function Produtos() {
                                                 type="radio"
                                                 name="ativo-ou-inativo"
                                                 onClick={e => {
-                                                    
+
                                                 }}
                                             />
                                             <span className="span-checkbox"></span>
@@ -212,7 +213,7 @@ export default function Produtos() {
                                                 type="radio"
                                                 name="ativo-ou-inativo"
                                                 onClick={e => {
-                                                    
+
                                                 }}
                                             />
                                             <span className="span-checkbox"></span>
@@ -224,7 +225,7 @@ export default function Produtos() {
                                                 type="radio"
                                                 name="ativo-ou-inativo"
                                                 onClick={e => {
-                                                    
+
                                                 }}
                                             />
                                             <span className="span-checkbox"></span>
@@ -344,5 +345,6 @@ export default function Produtos() {
                 </div>
             </div>
         </div>
+
     )
 }

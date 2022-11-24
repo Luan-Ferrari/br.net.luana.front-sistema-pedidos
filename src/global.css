@@ -23,12 +23,12 @@ body {
     color: #3d293b;
 }
 
-input, button, textarea, label, select {
+input, button, textarea, label, select, .botoes-consultas-itens-label {
     font: 600 15px sans-serif;
     letter-spacing: 0.8px;
 }
 
-button {
+button, .botoes-consultas-itens-label {
     cursor: pointer;
 }
 
@@ -57,9 +57,11 @@ select option {
     font: 600 15px sans-serif;
 }
 
-button {
+button, .botoes-consultas-itens-label {
     width: 100%;
-    height: 40px;
+    height: 44px;
+    font-size: 15px;
+    letter-spacing: 1.2px;
     background: #cc2388;
     border-color: #ffffff;
     border-style: solid;
@@ -75,10 +77,13 @@ button {
     transition: filter 0.2s;
 }
 
-button:hover {
+button:hover, .botoes-consultas-itens-label:hover {
     filter:brightness(80%)
 }
 
+.botoes-consultas-itens-radio {
+    display: none;
+}
 .page-container {
     width: 100%;
     max-width: 2100px;
@@ -93,3 +98,4 @@ button:hover {
     height: 100%;
     background: #d9d9d9; 
 }
+
