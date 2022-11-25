@@ -17,6 +17,7 @@ import { createDefaultHeader } from '../DefaultComponents/header/header';
 import { pesquisador, pesquisadorComplexo, pesquisadorFiltrosBotoes, pesquisadorSimples, pesquisadorString, pesquisadorSubAtributo } from '../DefaultComponents/manipuladores/pesquisador';
 
 import api from '../../services/api';
+import { changeCheckbox } from '../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 
 export default function Produtos() {
 
@@ -37,14 +38,13 @@ export default function Produtos() {
 
 
     //DAQUI PRA BAIXO LÓGICA PARA CONSULTAS //
-    //Talves esses useStates para cada parametro não sejam necessários
     const [consultaCodigo, setConsultaCodigo] = useState('');
     const [consultaDescricao, setConsultaDescricao] = useState('');
     const [consultaClasse, setConsultaClasse] = useState('');
     const [consultaAdulto, setConsultaAdulto] = useState('');
-    // const [consultaStatus, setConsultaStatus] = useState("Ativo");
-    // const [consultaConjunto, setConsultaConjunto] = useState('');
-    // const [consultaColecao, setConsultaColecao] = useState('');
+    const [consultaStatus, setConsultaStatus] = useState('1');
+    const [consultaConjunto, setConsultaConjunto] = useState('');
+    const [consultaColecao, setConsultaColecao] = useState('');
 
     //talvez a lista eu precise trocar por um array e não um obj
     let listaParametrosConsulta = {
@@ -54,9 +54,15 @@ export default function Produtos() {
             id: consultaClasse
         },
         adulto: consultaAdulto,
-        // status: 'Ativo',
-        // conjunto: '',
-        // colecao: ''
+        statusProduto: {
+            id: consultaStatus
+        },
+        conjunto: consultaConjunto,
+        colecoes: {
+            id: consultaColecao
+        }
+
+        //ATENÇÃO: ESSE OBJETO DE PARAMETROS DEVE TER SEUS ATRIBUTOS COM OS NOMES EXATAMENTE IGUAIS AOS NOMES DOS ATRIBUTOS RETORNADOS DA API
     };
 
     let listaFiltrada = pesquisadorComplexo(listaCompleta, listaParametrosConsulta);
@@ -142,13 +148,13 @@ export default function Produtos() {
                                             <input
                                                 type="radio"
                                                 name='botoes-consultas-itens'
-                                                id={'radio-classes'+a.id}
+                                                id={'radio-classes' + a.id}
                                                 className='botoes-consultas-itens-radio'
                                                 value={a.id}
                                                 onClick={e => setConsultaClasse(e.target.value)}>
                                             </input>
                                             <label
-                                                htmlFor={'radio-classes'+a.id}
+                                                htmlFor={'radio-classes' + a.id}
                                                 className='botoes-consultas-itens-label'>
                                                 {a.nomeClasse}
                                             </label>
@@ -159,11 +165,10 @@ export default function Produtos() {
 
                             <div className='filtros-consultas'>
                                 <label>Filtros:</label>
-                                <div className="radio-container">
+                                <div className="radio-container" id="radio-container-tamanho">
                                     <div>
                                         <label className="container-checkbox">Ambos
                                             <input
-                                                checked
                                                 type="radio"
                                                 name="adulto-ou-infantil"
                                                 onClick={e => setConsultaAdulto('')}
@@ -193,16 +198,18 @@ export default function Produtos() {
                                     </div>
                                 </div>
 
-                                <div className="radio-container" id="radio-2">
+                                <div className="radio-container" id="radio-container-status">
+                                    {
+                                        //Ativo = id:1
+                                        //Inativo = id:2
+                                        //Desenvolvimento = id:3
+                                    }
                                     <div>
                                         <label className="container-checkbox">Ativo
                                             <input
-                                                checked
                                                 type="radio"
                                                 name="ativo-ou-inativo"
-                                                onClick={e => {
-
-                                                }}
+                                                onClick={e => setConsultaStatus('1')}
                                             />
                                             <span className="span-checkbox"></span>
                                         </label>
@@ -212,9 +219,7 @@ export default function Produtos() {
                                             <input
                                                 type="radio"
                                                 name="ativo-ou-inativo"
-                                                onClick={e => {
-
-                                                }}
+                                                onClick={e => setConsultaStatus('2')}
                                             />
                                             <span className="span-checkbox"></span>
                                         </label>
@@ -224,9 +229,7 @@ export default function Produtos() {
                                             <input
                                                 type="radio"
                                                 name="ativo-ou-inativo"
-                                                onClick={e => {
-
-                                                }}
+                                                onClick={e => setConsultaStatus('3')}
                                             />
                                             <span className="span-checkbox"></span>
                                         </label>
@@ -239,11 +242,7 @@ export default function Produtos() {
                                             <input
                                                 type="checkbox"
                                                 name="conjunto"
-                                                value="true"
-                                            // onClick={e => {
-                                            //     setColecoes(creatObjectsArrayByIds(
-                                            //         addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
-                                            // }} 
+                                                onClick={e => setConsultaConjunto(e.target.checked ? true : '')}
                                             />
                                             <span className="span-checkbox"></span>
                                         </label>
@@ -255,11 +254,13 @@ export default function Produtos() {
                                         name="colecao"
                                         value={viewColecao}
                                         onChange={e => {
+                                            console.log(e.target.value)
+                                            setConsultaColecao(e.target.value)
                                             setViewColecao(e.target.value)
                                         }}
                                     >
                                         <option value=""></option>
-                                        {colecoes.map((a, b) => (
+                                        {colecoes.map((a) => (
                                             <option value={a.id}>{a.nomeColecao}</option>
                                         ))}
                                     </select>
