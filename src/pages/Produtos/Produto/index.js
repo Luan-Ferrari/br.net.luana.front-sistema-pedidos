@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
+
 import {
     BiMessageSquareAdd, BiMessageSquareCheck, BiMessageSquareDots,
     BiMessageSquareDetail, BiMessageSquareEdit, BiMessageSquareX, BiMessageSquareError
 } from 'react-icons/bi';
-import { IoMdAddCircleOutline } from 'react-icons/io';
 
-import "../DefaultComponents/consultas.css";
-import '../DefaultComponents/janelas.css';
-import '../DefaultComponents/listagens.css';
+
+import "../../DefaultComponents/consultas.css";
+import '../../DefaultComponents/janelas.css';
 import './styles.css';
+import '../../DefaultComponents/listagens.css';
 
-import { createDefaultHeader } from '../DefaultComponents/header/header';
+import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
-import { pesquisador, pesquisadorComplexo, pesquisadorFiltrosBotoes, pesquisadorSimples, pesquisadorString, pesquisadorSubAtributo } from '../DefaultComponents/manipuladores/pesquisador';
+import { pesquisadorComplexo } from '../../DefaultComponents/manipuladores/pesquisador';
 
-import api from '../../services/api';
-import { changeCheckbox } from '../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
+import api from '../../../services/api';
+import { criarListaItensSelecionados, selectAllCheckbox } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 
 export default function Produtos() {
 
@@ -35,8 +35,6 @@ export default function Produtos() {
     const [colecoes, setColecoes] = useState([]);
     const [viewColecao, setViewColecao] = useState([]);
 
-
-
     //DAQUI PRA BAIXO LÓGICA PARA CONSULTAS //
     const [consultaCodigo, setConsultaCodigo] = useState('');
     const [consultaDescricao, setConsultaDescricao] = useState('');
@@ -46,7 +44,6 @@ export default function Produtos() {
     const [consultaConjunto, setConsultaConjunto] = useState('');
     const [consultaColecao, setConsultaColecao] = useState('');
 
-    //talvez a lista eu precise trocar por um array e não um obj
     let listaParametrosConsulta = {
         codigoProduto: consultaCodigo,
         descricao: consultaDescricao,
@@ -66,8 +63,6 @@ export default function Produtos() {
     };
 
     let listaFiltrada = pesquisadorComplexo(listaCompleta, listaParametrosConsulta);
-
-
     //DAQUI PRA CIMA, LÓGICA PARA CONSULTAS //
 
     const navigate = useNavigate();
@@ -280,7 +275,8 @@ export default function Produtos() {
                         <BiMessageSquareDots className='icon' />
                         <span>Alterar Relação</span>
                     </button>
-                    <button>
+                    <button
+                    onClick={e => criarListaItensSelecionados(listaFiltrada)}>
                         <BiMessageSquareCheck className='icon' />
                         <span>Alterar Seleção</span>
                     </button>
@@ -304,7 +300,15 @@ export default function Produtos() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th> </th>
+                                        <th>
+                                            <label className='container-checkbox'>
+                                                <input type="checkbox"
+                                                className="listagem-itens-checkbox-select_all"
+                                                    onChange={e => { selectAllCheckbox(e.target.checked) }}
+                                                />
+                                                <span className='span-checkbox'></span>
+                                            </label>
+                                        </th>
                                         <th>Código</th>
                                         <th>Descrição</th>
                                         <th>Tamanhos</th>
@@ -319,7 +323,12 @@ export default function Produtos() {
                                         <tr>
                                             <td>
                                                 <label className='container-checkbox'>
-                                                    <input type="checkbox" />
+                                                    <input
+                                                        type="checkbox"
+                                                        name={a.codigoProduto}
+                                                        value={a.codigoProduto}
+                                                        className='checkbox-input-item'
+                                                        />
                                                     <span className='span-checkbox'></span>
                                                 </label>
                                             </td>

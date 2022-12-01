@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Login from './pages/Login';
-import Produto from './pages/Produto'
-import NovoProduto from './pages/NovoProduto';
+import Produto from './pages/Produtos/Produto'
+import NovoProduto from './pages/Produtos/NovoProduto';
 
 export default function AppRoutes() {
     return (

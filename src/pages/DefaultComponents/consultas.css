@@ -35,6 +35,7 @@ input {
 .botoes-consultas-itens-radio:checked + .botoes-consultas-itens-label {
     filter:brightness(75%);
 }
+
 .filtros-consultas {
     margin: 15px 0px 0px 25px;
 }

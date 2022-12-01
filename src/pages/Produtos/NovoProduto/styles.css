@@ -1,0 +1,57 @@
+.conteudo-janela-padrao form{
+    display: grid;
+    grid-template-areas: 
+    'codigo descricao descricao descricao adulto conjunto'
+    '. atacado varejo status classe classe'
+    'colecoes colecoes colecoes tamanhos tamanhos tamanhos'
+    '. . . . . submit';
+}
+
+
+#codigo-produto {
+    grid-area: codigo;
+}
+
+#descricao-produto {
+    grid-area: descricao;
+}
+
+#conjunto {
+    grid-area: conjunto; 
+}
+
+#adulto {
+    grid-area: adulto; 
+}
+
+#valor-atacado {
+    grid-area: atacado;
+}
+
+#valor-varejo {
+    grid-area: varejo;
+}
+
+#classe-produto {
+    grid-area: classe;
+}
+
+#status-produto {
+    grid-area: status;
+}
+
+#colecoes {
+    grid-area: colecoes;
+}
+
+#tamanhos {
+    grid-area: tamanhos;
+}
+
+#botao-submit {
+    grid-area: submit;
+}
+
+
+
+

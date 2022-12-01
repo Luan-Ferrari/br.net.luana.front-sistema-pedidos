@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-import '../DefaultComponents/janelas.css';
-import '../DefaultComponents/boolean-button.css'
-import '../DefaultComponents/checkbox-container.css'
+import '../../DefaultComponents/janelas.css';
+import '../../DefaultComponents/boolean-button.css'
+import '../../DefaultComponents/checkbox-container.css'
 import './styles.css';
 
 // import { MdCheckBox } from 'react-icons/md'
 
-import { createDefaultHeader } from '../DefaultComponents/header/header';
+import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
-import api from '../../services/api'
-import { booleanButtonField, defaultField, selectField, checkboxListField } from '../DefaultComponents/form-fields/form-fields';
+import api from '../../../services/api'
+import { booleanButtonField, defaultField, selectField, checkboxListField } from '../../DefaultComponents/form-fields/form-fields';
 
 export default function NovoProduto() {
 
