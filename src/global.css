@@ -21,6 +21,9 @@
 body {
     font: 400 15px Helvetica;
     color: #3d293b;
+    height: 100vh;
+    background: #d9d9d9;
+  
 }
 
 input, button, textarea, label, select, .botoes-consultas-itens-label {
@@ -86,8 +89,8 @@ button:hover, .botoes-consultas-itens-label:hover {
 }
 .page-container {
     width: 100%;
-    max-width: 2100px;
-    height: 100vh;
+    max-width: 100%;
+    height: 100%;
     margin: 0 auto;
     align-items: center;
     justify-content: space-between;
@@ -98,4 +101,6 @@ button:hover, .botoes-consultas-itens-label:hover {
     height: 100%;
     background: #d9d9d9; 
 }
+
+
 

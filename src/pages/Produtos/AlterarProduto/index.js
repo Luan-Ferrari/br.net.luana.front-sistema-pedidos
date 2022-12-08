@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
-import '../DefaultComponents/janelas.css';
-import '../DefaultComponents/boolean-button.css'
-import '../DefaultComponents/checkbox-container.css'
+import '../../DefaultComponents/janelas.css';
+import '../../DefaultComponents/boolean-button.css'
+import '../../DefaultComponents/checkbox-container.css'
+import '../../DefaultComponents/modal.css'
 import './styles.css';
 
 // import { MdCheckBox } from 'react-icons/md'
@@ -13,7 +14,13 @@ import { createDefaultHeader } from '../../DefaultComponents/header/header';
 import api from '../../../services/api'
 import { booleanButtonField, defaultField, selectField, checkboxListField } from '../../DefaultComponents/form-fields/form-fields';
 
-export default function NovoProduto() {
+
+//ATENCAO ATENCAO ATENCAO ATENCAO
+
+//Testar primeiro o PUT metodo para uma única atualização, porque no back end da API já existe esse método
+
+
+export default function AlterarProduto() {
 
     const accessToken = localStorage.getItem('accessToken');
 
@@ -22,6 +29,10 @@ export default function NovoProduto() {
             Authorization: accessToken
         }
     }
+
+    const { id_alterado } = useParams();
+
+    const [itemASerAlterado, setItemASerAlterado] = useState({});
 
     const [id, setId] = useState(null);
     const [codigoProduto, setCodigoProduto] = useState('');
@@ -45,9 +56,29 @@ export default function NovoProduto() {
     const [listaTamanhos, setListaTamanhos] = useState([]);
     const [tamanhosAceitos, setTamanhosAceitos] = useState([]);
 
+
     const navigate = useNavigate();
 
     const obj = new Object();
+
+    async function loadItemASerAlterado() {
+        await api.get('/produto/' + id_alterado, header)
+            .then(response => {
+                const item = response.data;
+                setId(item.id);
+                setCodigoProduto(item.codigoProduto);
+                setDescricao(item.descricao);
+                setConjunto(item.conjunto);
+                setAdulto(item.adulto);
+                setValorAtacado(item.valorAtacado);
+                setValorVarejo(item.valorVarejo);
+                setStatusProduto(item.statusProduto);
+                setClasseProduto(item.classeProduto);
+                setColecoes(item.colecoes);
+                setTamanhosAceitos(item.tamanhosAceitos);
+
+            })
+    }
 
     async function loadClasses() {
         await api.get('/classeProduto', header)
@@ -77,10 +108,11 @@ export default function NovoProduto() {
             })
     }
 
-    async function criarNovoProduto(e) {
+    async function alterarProduto(e) {
         e.preventDefault();
 
         const data = {
+            id,
             codigoProduto,
             descricao,
             conjunto,
@@ -94,7 +126,7 @@ export default function NovoProduto() {
         }
 
         try {
-            const response = await api.post('/produto', data, header)
+            const response = await api.put('/produto/' + id, data, header)
             navigate('/produto')
         } catch (err) {
             for (const [erro, mensagem] of Object.entries(err.response.data)) {
@@ -105,6 +137,7 @@ export default function NovoProduto() {
     }
 
     useEffect(() => {
+        loadItemASerAlterado();
         loadStatusProduto();
         loadTamanhos();
         loadClasses();
@@ -112,178 +145,56 @@ export default function NovoProduto() {
     }, [])
 
     return (
-        <div className='page-container'>
-            <div className='conteudo'>
+        <div className='modal-container'>
 
-                {createDefaultHeader()}
-
-                <div className="linha-navegacao">
-                    <div>
-                        <p>INÍCIO</p>
-                        <p> &gt; </p>
-                        <p>PRODUTO</p>
-                        <p> &gt; </p>
-                        <p>NOVO PRODUTO</p>
-                    </div>
+            <div className="janela-padrao">
+                <div className="barra-titulo-janela-padrao">
+                    <p>Alterar Produto</p>
                 </div>
 
-                <div className="janela-padrao">
-                    <div className="barra-titulo-janela-padrao">
-                        <p>Novo Produto</p>
+                <div className="conteudo-janela-padrao">
+                    <div>
+                        Mostra na tela o {id_alterado}
                     </div>
+                    <form onSubmit={alterarProduto}>
+                        {console.log(codigoProduto)}
+                        {console.log(itemASerAlterado)}
+                        {console.log(itemASerAlterado.codigoProduto)}
+                        {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
 
-                    <div className="conteudo-janela-padrao">
-                        <form onSubmit={criarNovoProduto}>
-                            {/* <div id="codigo-produto">
-                                <label htmlFor='codigo-produto'>Código do Produto</label>
-                                <input
-                                name="codigo-produto"
-                                className="texto-tam-1"  
-                                value={codigoProduto}
-                                onChange={e => setCodigoProduto(e.target.value)}
-                                />
-                            </div> */}
-                            {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
+                        {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
 
-                            {/* <div id="descricao-produto">
-                                <label htmlFor='descricao-produto'>Descrição do Produto</label>
-                                <input
-                                name="descricao-produto"
-                                className="texto-tam-3"  
-                                value={descricao}
-                                onChange={e => setDescricao(e.target.value)}
-                                />
-                            </div> */}
-                            {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
+                        {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
 
-                            {/* <div className="boolean-button-container" id="conjunto">
-                                <label>Conjunto</label>
-                                <div className="boolean-button">
-                                    <input type="radio" id="opcao-um" name="conjunto" 
-                                    onClick={e => setConjunto(true)}/>
-                                    <label className="botao-um" htmlFor='opcao-um'>Sim</label>
-                                </div>
-                                <div className="boolean-button">
-                                    <input type="radio" id="opcao-dois" name="conjunto" 
-                                    onClick={e => setConjunto(false)}/>
-                                    <label className="botao-dois" htmlFor='opcao-dois'>Não</label>
-                                </div>
-                            </div>    */}
-                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
+                        {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
 
-                            {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
+                        {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
 
+                        {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
 
-                            {/* <div id="valor-atacado">
-                                <label htmlFor="valor-atacado">Valor Atacado</label>
-                                <input
-                                name="valor-atacado"
-                                className="texto-tam-1" 
-                                value={valorAtacado}
-                                onChange={e => setValorAtacado(e.target.value)} 
-                                />
-                            </div> */}
-                            {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
+                        {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto,
+                            "id", setViewClasseProduto, viewClasseProduto, listaClasses, "nomeClasse")}
 
-                            {/* <div id="valor-varejo">
-                                <label htmlFor="valor-varejo">Valor Varejo</label>
-                                <input
-                                name="valor-varejo"
-                                className="texto-tam-1" 
-                                value={valorVarejo}
-                                onChange={e => setValorVarejo(e.target.value)} 
-                                />
-                            </div> */}
-                            {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
+                        {// ATENÇÃO, ATENÇÃO, ATENÇÃO, ATENÇÃO
+                        // REFATORAR O MÉTODO QUE VERIFICA OS CHECKBOX NO ARQUIVO MANIPULADOR ARRAY E OBJETOS.
+                        // ACREDITO QUE A MELHOR OPCAO SEJA USAR O GETELEMENTSBYNAME E COLOCAR UM NOME ESPECIFICO EM CADA INPUT
+                        // FAZENDO A VERIFICAÇÃO DE CHECKED EM CADA INPUT,
+                        // TENTAR MANTER COM QUE A ORDENACAO CONTINUE SENDO POR ID, SOMENTE DOS SELECIONADOS, NO JSON CRIADO PARA O POST OU PUT DO PRODUTO
+                        }
+                        
+                        {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto,
+                            "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
 
-                            {/* <div id="classe-produto">
-                                <label htmlFor="classe-produto">Classe do Produto</label>
-                                <select
-                                    name="classe-produto"
-                                    value={viewClasseProduto}
-                                    onChange={e => {
-                                        setClasseProduto({ id: e.target.value })
-                                        setViewClasseProduto(e.target.value)
-                                    }}>
-                                    <option value="">Selecione uma Classe</option>
-                                    {listaClasses.map((a, b) => (
-                                        <option value={a.id}>{a.nomeClasse}</option>
-                                    ))}
-                                </select>
-                            </div> */}
-                            {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto, 
-                                "id", setViewClasseProduto, viewClasseProduto, listaClasses, "nomeClasse")}
+                        {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes,
+                            colecoes, "nomeColecao")}
 
-                            {/* <div id="status-produto">
-                                <label htmlFor="status-produto">Status do Produto</label>
-                                <select
-                                    name="status-produto"
-                                    value={viewStatusProduto}
-                                    onChange={e => {
-                                        setStatusProduto({ id: e.target.value })
-                                        setViewStatusProduto(e.target.value)
-                                    }}>
-                                    <option value="">Selecione um Status</option>
-                                    {listaStatusProduto.map((a, b) => (
-                                        <option value={a.id}>{a.descricao}</option>
-                                    ))}
-                                </select>
-                            </div> */}
-                            {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto, 
-                                "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
+                        {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos,
+                            tamanhosAceitos, "descricao")}
 
-                            {/* <div id="colecoes">
-                                <label htmlFor="colecoes">Coleções</label>
-                                <div className="tabela-opcoes" name="colecoes">
-                                    {listaColecoes.map((a, b) => (
-                                        <div>
-                                            <label className="container-checkbox">{a.nomeColecao}
-                                                <input
-                                                    type="checkbox"
-                                                    name={a.nomeColecao}
-                                                    value={a.id}
-                                                    onClick={e => {
-                                                        setColecoes(creatObjectsArrayByIds(
-                                                            addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
-                                                    }} />
-                                                <span className="span-checkbox"></span>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div> */}
-                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, 
-                                colecoes, "nomeColecao")}
-
-                            {/* <div id="tamanhos">
-                                <label htmlFor="tamanhos">Tamanhos</label>
-                                <div id="tabela-tamanhos" className="tabela-opcoes" name="tamanhos">
-                                    {listaTamanhos.map((a, b) => (
-                                        <div>
-                                            <label className="container-checkbox">{a.descricao}
-                                                <input
-                                                    className="tamanho_checkbox"
-                                                    type="checkbox"
-                                                    name={a.descricao}
-                                                    value={a.id}
-                                                    onClick={e => {
-                                                        setTamanhosAceitos(creatObjectsArrayByIds(
-                                                            addOrRemoveItens(e, extractIdsFromObjectsArray(tamanhosAceitos))));
-                                                    }} />
-                                                <span className="span-checkbox"></span>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div> */}
-                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, 
-                                tamanhosAceitos, "descricao")}
-
-                            <div id="botao-submit">
-                                <button type="submit">Adicionar</button>
-                            </div>
-                        </form>
-                    </div>
+                        <div id="botao-submit">
+                            <button type="submit">Adicionar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

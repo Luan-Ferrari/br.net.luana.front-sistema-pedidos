@@ -6,7 +6,6 @@ import {
     BiMessageSquareDetail, BiMessageSquareEdit, BiMessageSquareX, BiMessageSquareError
 } from 'react-icons/bi';
 
-
 import "../../DefaultComponents/consultas.css";
 import '../../DefaultComponents/janelas.css';
 import './styles.css';
@@ -18,6 +17,7 @@ import { pesquisadorComplexo } from '../../DefaultComponents/manipuladores/pesqu
 
 import api from '../../../services/api';
 import { criarListaItensSelecionados, selectAllCheckbox } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
+import AlterarProduto from '../AlterarProduto';
 
 export default function Produtos() {
 
@@ -276,7 +276,7 @@ export default function Produtos() {
                         <span>Alterar Relação</span>
                     </button>
                     <button
-                    onClick={e => criarListaItensSelecionados(listaFiltrada)}>
+                        onClick={e => criarListaItensSelecionados(listaFiltrada)}>
                         <BiMessageSquareCheck className='icon' />
                         <span>Alterar Seleção</span>
                     </button>
@@ -303,7 +303,7 @@ export default function Produtos() {
                                         <th>
                                             <label className='container-checkbox'>
                                                 <input type="checkbox"
-                                                className="listagem-itens-checkbox-select_all"
+                                                    className="listagem-itens-checkbox-select_all"
                                                     onChange={e => { selectAllCheckbox(e.target.checked) }}
                                                 />
                                                 <span className='span-checkbox'></span>
@@ -328,7 +328,7 @@ export default function Produtos() {
                                                         name={a.codigoProduto}
                                                         value={a.codigoProduto}
                                                         className='checkbox-input-item'
-                                                        />
+                                                    />
                                                     <span className='span-checkbox'></span>
                                                 </label>
                                             </td>
@@ -339,7 +339,8 @@ export default function Produtos() {
                                             <td>{a.valorVarejo}</td>
                                             <td>{a.classeProduto.nomeClasse}</td>
                                             <td>
-                                                <button type="button">
+                                                <button type="button"
+                                                onClick={e => navigate("/produto/alterar/" + a.id)}>
                                                     <BiMessageSquareEdit />
                                                 </button>
                                                 <button type="button">
@@ -355,6 +356,8 @@ export default function Produtos() {
                 </div>
             </div>
         </div>
+
+
 
     )
 }

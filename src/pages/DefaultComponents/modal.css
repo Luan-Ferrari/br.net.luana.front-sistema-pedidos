@@ -1,0 +1,6 @@
+.modal-container {
+    width: 100%;
+    background: white;
+    opacity: 2;
+    z-index: 99;
+}
