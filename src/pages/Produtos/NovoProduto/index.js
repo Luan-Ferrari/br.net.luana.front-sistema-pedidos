@@ -6,8 +6,6 @@ import '../../DefaultComponents/boolean-button.css'
 import '../../DefaultComponents/checkbox-container.css'
 import './styles.css';
 
-// import { MdCheckBox } from 'react-icons/md'
-
 import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
 import api from '../../../services/api'
@@ -134,26 +132,9 @@ export default function NovoProduto() {
 
                     <div className="conteudo-janela-padrao">
                         <form onSubmit={criarNovoProduto}>
-                            {/* <div id="codigo-produto">
-                                <label htmlFor='codigo-produto'>Código do Produto</label>
-                                <input
-                                name="codigo-produto"
-                                className="texto-tam-1"  
-                                value={codigoProduto}
-                                onChange={e => setCodigoProduto(e.target.value)}
-                                />
-                            </div> */}
+                   
                             {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
 
-                            {/* <div id="descricao-produto">
-                                <label htmlFor='descricao-produto'>Descrição do Produto</label>
-                                <input
-                                name="descricao-produto"
-                                className="texto-tam-3"  
-                                value={descricao}
-                                onChange={e => setDescricao(e.target.value)}
-                                />
-                            </div> */}
                             {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
 
                             {/* <div className="boolean-button-container" id="conjunto">
@@ -173,27 +154,8 @@ export default function NovoProduto() {
 
                             {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
 
-
-                            {/* <div id="valor-atacado">
-                                <label htmlFor="valor-atacado">Valor Atacado</label>
-                                <input
-                                name="valor-atacado"
-                                className="texto-tam-1" 
-                                value={valorAtacado}
-                                onChange={e => setValorAtacado(e.target.value)} 
-                                />
-                            </div> */}
                             {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
 
-                            {/* <div id="valor-varejo">
-                                <label htmlFor="valor-varejo">Valor Varejo</label>
-                                <input
-                                name="valor-varejo"
-                                className="texto-tam-1" 
-                                value={valorVarejo}
-                                onChange={e => setValorVarejo(e.target.value)} 
-                                />
-                            </div> */}
                             {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
 
                             {/* <div id="classe-produto">
@@ -232,52 +194,9 @@ export default function NovoProduto() {
                             {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto, 
                                 "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
 
-                            {/* <div id="colecoes">
-                                <label htmlFor="colecoes">Coleções</label>
-                                <div className="tabela-opcoes" name="colecoes">
-                                    {listaColecoes.map((a, b) => (
-                                        <div>
-                                            <label className="container-checkbox">{a.nomeColecao}
-                                                <input
-                                                    type="checkbox"
-                                                    name={a.nomeColecao}
-                                                    value={a.id}
-                                                    onClick={e => {
-                                                        setColecoes(creatObjectsArrayByIds(
-                                                            addOrRemoveItens(e, extractIdsFromObjectsArray(colecoes))))
-                                                    }} />
-                                                <span className="span-checkbox"></span>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div> */}
-                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, 
-                                colecoes, "nomeColecao")}
+                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao")}
 
-                            {/* <div id="tamanhos">
-                                <label htmlFor="tamanhos">Tamanhos</label>
-                                <div id="tabela-tamanhos" className="tabela-opcoes" name="tamanhos">
-                                    {listaTamanhos.map((a, b) => (
-                                        <div>
-                                            <label className="container-checkbox">{a.descricao}
-                                                <input
-                                                    className="tamanho_checkbox"
-                                                    type="checkbox"
-                                                    name={a.descricao}
-                                                    value={a.id}
-                                                    onClick={e => {
-                                                        setTamanhosAceitos(creatObjectsArrayByIds(
-                                                            addOrRemoveItens(e, extractIdsFromObjectsArray(tamanhosAceitos))));
-                                                    }} />
-                                                <span className="span-checkbox"></span>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div> */}
-                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, 
-                                tamanhosAceitos, "descricao")}
+                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, "descricao")}
 
                             <div id="botao-submit">
                                 <button type="submit">Adicionar</button>

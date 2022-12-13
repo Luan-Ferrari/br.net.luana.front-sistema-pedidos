@@ -1,4 +1,4 @@
-import { creatObjectsArrayByIds, addOrRemoveItens, extractIdsFromObjectsArray } from '../manipuladores/manipuladorArraysEObjetos';
+import { criarListaItensSelecionados, marcarCheckboxesByIds } from '../manipuladores/manipuladorArraysEObjetos';
 
 
 export function defaultField(identificador, labelText, classe, value, setter) {
@@ -47,7 +47,7 @@ export function selectField(identificador, labelText, selectDefaultText, setter,
                     setterView(e.target.value)
                 }}>
                 <option value="">{selectDefaultText}</option>
-                {listaOpcoes.map((a, b) => (
+                {listaOpcoes.map((a) => (
                     <option value={a[atributoIdentificador]}>{a[atributoNome]}</option>
                 ))}
             </select>
@@ -61,13 +61,12 @@ export function selectField(identificador, labelText, selectDefaultText, setter,
     // que vem do backend que contem a informacao que queremos exibir ao usuario
 }
 
-export function checkboxListField(identificador, labelText, setter, atributoIdentificador, listaOpcoes, 
-    listaSelecionados, atributoNome) {
+export function checkboxListField(identificador, labelText, setter, atributoIdentificador, listaOpcoes, atributoNome) {
     return (
         <div id={identificador}>
             <label htmlFor={identificador}>{labelText}</label>
             <div className="checkbox-opcoes" name={identificador}>
-                {listaOpcoes.map((a, b) => (
+                {listaOpcoes.map((a) => (
                     <div>
                         <label className="container-checkbox">{a[atributoNome]}
                             <input
@@ -75,8 +74,7 @@ export function checkboxListField(identificador, labelText, setter, atributoIden
                                 name={a[atributoNome]}
                                 value={a[atributoIdentificador]}
                                 onClick={e => {
-                                    setter(creatObjectsArrayByIds(
-                                        addOrRemoveItens(e, extractIdsFromObjectsArray(listaSelecionados))))
+                                    setter(criarListaItensSelecionados(listaOpcoes, '#' + identificador + ' input'))
                                 }} />
                             <span className="span-checkbox"></span>
                         </label>
@@ -86,3 +84,4 @@ export function checkboxListField(identificador, labelText, setter, atributoIden
         </div>
     )
 }
+

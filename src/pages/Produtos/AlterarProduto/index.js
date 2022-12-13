@@ -10,9 +10,10 @@ import './styles.css';
 // import { MdCheckBox } from 'react-icons/md'
 
 import { createDefaultHeader } from '../../DefaultComponents/header/header';
+import { marcarBooleanButon, marcarCheckboxesByIds } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 
 import api from '../../../services/api'
-import { booleanButtonField, defaultField, selectField, checkboxListField } from '../../DefaultComponents/form-fields/form-fields';
+import { booleanButtonField, defaultField, selectField, checkboxListField, checkboxListFieldComPreSelecionados } from '../../DefaultComponents/form-fields/form-fields';
 
 
 //ATENCAO ATENCAO ATENCAO ATENCAO
@@ -76,6 +77,9 @@ export default function AlterarProduto() {
                 setClasseProduto(item.classeProduto);
                 setColecoes(item.colecoes);
                 setTamanhosAceitos(item.tamanhosAceitos);
+
+                setViewStatusProduto(item.statusProduto.id);
+                setViewClasseProduto(item.classeProduto.id);
 
             })
     }
@@ -153,20 +157,17 @@ export default function AlterarProduto() {
                 </div>
 
                 <div className="conteudo-janela-padrao">
-                    <div>
-                        Mostra na tela o {id_alterado}
-                    </div>
                     <form onSubmit={alterarProduto}>
-                        {console.log(codigoProduto)}
-                        {console.log(itemASerAlterado)}
-                        {console.log(itemASerAlterado.codigoProduto)}
+                        
                         {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
 
                         {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
 
                         {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
+                        {marcarBooleanButon('Sim', 'Não', (conjunto == true ? 'Sim' : 'Não'))}
 
                         {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
+                        {marcarBooleanButon('Adulto', 'Infantil', (adulto == true ? 'Adulto' : 'Infantil'))}
 
                         {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
 
@@ -175,21 +176,14 @@ export default function AlterarProduto() {
                         {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto,
                             "id", setViewClasseProduto, viewClasseProduto, listaClasses, "nomeClasse")}
 
-                        {// ATENÇÃO, ATENÇÃO, ATENÇÃO, ATENÇÃO
-                        // REFATORAR O MÉTODO QUE VERIFICA OS CHECKBOX NO ARQUIVO MANIPULADOR ARRAY E OBJETOS.
-                        // ACREDITO QUE A MELHOR OPCAO SEJA USAR O GETELEMENTSBYNAME E COLOCAR UM NOME ESPECIFICO EM CADA INPUT
-                        // FAZENDO A VERIFICAÇÃO DE CHECKED EM CADA INPUT,
-                        // TENTAR MANTER COM QUE A ORDENACAO CONTINUE SENDO POR ID, SOMENTE DOS SELECIONADOS, NO JSON CRIADO PARA O POST OU PUT DO PRODUTO
-                        }
-                        
                         {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto,
                             "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
 
-                        {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes,
-                            colecoes, "nomeColecao")}
+                        {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao")}
+                        {marcarCheckboxesByIds(colecoes, '#colecoes input')}
 
-                        {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos,
-                            tamanhosAceitos, "descricao")}
+                        {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, "descricao")}
+                        {marcarCheckboxesByIds(tamanhosAceitos, '#tamanhos input')}
 
                         <div id="botao-submit">
                             <button type="submit">Adicionar</button>

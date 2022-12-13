@@ -267,7 +267,8 @@ export default function Produtos() {
                 </div>
 
                 <div className='espaco-botoes-acoes'>
-                    <button>
+                    <button 
+                        onClick={e => navigate('/produto/novo')}>
                         <BiMessageSquareAdd className='icon' />
                         <span>Criar Produto</span>
                     </button>
@@ -276,7 +277,7 @@ export default function Produtos() {
                         <span>Alterar Relação</span>
                     </button>
                     <button
-                        onClick={e => criarListaItensSelecionados(listaFiltrada)}>
+                        onClick={e => criarListaItensSelecionados(listaFiltrada, '.listagem-itens tbody .container-checkbox input')}>
                         <BiMessageSquareCheck className='icon' />
                         <span>Alterar Seleção</span>
                     </button>
@@ -304,7 +305,7 @@ export default function Produtos() {
                                             <label className='container-checkbox'>
                                                 <input type="checkbox"
                                                     className="listagem-itens-checkbox-select_all"
-                                                    onChange={e => { selectAllCheckbox(e.target.checked) }}
+                                                    onChange={e => { selectAllCheckbox(e.target.checked, '.listagem-itens tbody .container-checkbox input') }}
                                                 />
                                                 <span className='span-checkbox'></span>
                                             </label>
