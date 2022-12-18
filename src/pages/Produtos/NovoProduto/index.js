@@ -137,19 +137,6 @@ export default function NovoProduto() {
 
                             {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
 
-                            {/* <div className="boolean-button-container" id="conjunto">
-                                <label>Conjunto</label>
-                                <div className="boolean-button">
-                                    <input type="radio" id="opcao-um" name="conjunto" 
-                                    onClick={e => setConjunto(true)}/>
-                                    <label className="botao-um" htmlFor='opcao-um'>Sim</label>
-                                </div>
-                                <div className="boolean-button">
-                                    <input type="radio" id="opcao-dois" name="conjunto" 
-                                    onClick={e => setConjunto(false)}/>
-                                    <label className="botao-dois" htmlFor='opcao-dois'>Não</label>
-                                </div>
-                            </div>    */}
                             {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
 
                             {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
@@ -158,39 +145,9 @@ export default function NovoProduto() {
 
                             {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
 
-                            {/* <div id="classe-produto">
-                                <label htmlFor="classe-produto">Classe do Produto</label>
-                                <select
-                                    name="classe-produto"
-                                    value={viewClasseProduto}
-                                    onChange={e => {
-                                        setClasseProduto({ id: e.target.value })
-                                        setViewClasseProduto(e.target.value)
-                                    }}>
-                                    <option value="">Selecione uma Classe</option>
-                                    {listaClasses.map((a, b) => (
-                                        <option value={a.id}>{a.nomeClasse}</option>
-                                    ))}
-                                </select>
-                            </div> */}
                             {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto, 
                                 "id", setViewClasseProduto, viewClasseProduto, listaClasses, "nomeClasse")}
 
-                            {/* <div id="status-produto">
-                                <label htmlFor="status-produto">Status do Produto</label>
-                                <select
-                                    name="status-produto"
-                                    value={viewStatusProduto}
-                                    onChange={e => {
-                                        setStatusProduto({ id: e.target.value })
-                                        setViewStatusProduto(e.target.value)
-                                    }}>
-                                    <option value="">Selecione um Status</option>
-                                    {listaStatusProduto.map((a, b) => (
-                                        <option value={a.id}>{a.descricao}</option>
-                                    ))}
-                                </select>
-                            </div> */}
                             {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto, 
                                 "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
 

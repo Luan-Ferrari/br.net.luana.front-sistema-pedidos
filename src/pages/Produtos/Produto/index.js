@@ -17,7 +17,7 @@ import { pesquisadorComplexo } from '../../DefaultComponents/manipuladores/pesqu
 
 import api from '../../../services/api';
 import { criarListaItensSelecionados, selectAllCheckbox } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
-import AlterarProduto from '../AlterarProduto';
+import { booleanSearchField, buttonSearchField, filtroSearchField, inputSearchField, selectSearchField } from '../../DefaultComponents/search-fields/search-fields';
 
 export default function Produtos() {
 
@@ -117,149 +117,30 @@ export default function Produtos() {
                     <div className="conteudo-janela-padrao">
                         <div className="consulta-container">
                             <div className='inputs-consultas'>
-                                <div>
-                                    <label htmlFor="consulta-codigo">Código:</label>
-                                    <input
-                                        name="consulta-codigo"
-                                        value={consultaCodigo}
-                                        onChange={e => setConsultaCodigo(e.target.value)}
-                                    />
-                                </div>
 
-                                <div>
-                                    <label htmlFor="consulta-descricao">Descricao:</label>
-                                    <input
-                                        name="consulta-descricao"
-                                        onChange={e => setConsultaDescricao(e.target.value)}
-                                    />
-                                </div>
+                                {inputSearchField("consulta-codigo", "Código:", setConsultaCodigo)}
+
+                                {inputSearchField("consulta-descricao", "Descrição:", setConsultaDescricao)}
+
                             </div>
 
                             <div className='botoes-consultas-container'>
                                 <label>Buscar por:</label>
-                                <div>
-                                    {classesProdutos.map((a) => (
-                                        <div className='botoes-consultas-seletor'>
-                                            <input
-                                                type="radio"
-                                                name='botoes-consultas-itens'
-                                                id={'radio-classes' + a.id}
-                                                className='botoes-consultas-itens-radio'
-                                                value={a.id}
-                                                onClick={e => setConsultaClasse(e.target.value)}>
-                                            </input>
-                                            <label
-                                                htmlFor={'radio-classes' + a.id}
-                                                className='botoes-consultas-itens-label'>
-                                                {a.nomeClasse}
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
+
+                                {buttonSearchField(classesProdutos, setConsultaClasse, "classes", "id", "nomeClasse")}
+
                             </div>
 
                             <div className='filtros-consultas'>
                                 <label>Filtros:</label>
-                                <div className="radio-container" id="radio-container-tamanho">
-                                    <div>
-                                        <label className="container-checkbox">Ambos
-                                            <input
-                                                type="radio"
-                                                name="adulto-ou-infantil"
-                                                onClick={e => setConsultaAdulto('')}
-                                            />
-                                            <span className="span-checkbox"></span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label className="container-checkbox">Adulto
-                                            <input
-                                                type="radio"
-                                                name="adulto-ou-infantil"
-                                                onClick={e => setConsultaAdulto(true)}
-                                            />
-                                            <span className="span-checkbox"></span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label className="container-checkbox">Infantil
-                                            <input
-                                                type="radio"
-                                                name="adulto-ou-infantil"
-                                                onClick={e => setConsultaAdulto(false)}
-                                            />
-                                            <span className="span-checkbox"></span>
-                                        </label>
-                                    </div>
-                                </div>
 
-                                <div className="radio-container" id="radio-container-status">
-                                    {
-                                        //Ativo = id:1
-                                        //Inativo = id:2
-                                        //Desenvolvimento = id:3
-                                    }
-                                    <div>
-                                        <label className="container-checkbox">Ativo
-                                            <input
-                                                type="radio"
-                                                name="ativo-ou-inativo"
-                                                onClick={e => setConsultaStatus('1')}
-                                            />
-                                            <span className="span-checkbox"></span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label className="container-checkbox">Inativo
-                                            <input
-                                                type="radio"
-                                                name="ativo-ou-inativo"
-                                                onClick={e => setConsultaStatus('2')}
-                                            />
-                                            <span className="span-checkbox"></span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label className="container-checkbox">Desenvolvimento
-                                            <input
-                                                type="radio"
-                                                name="ativo-ou-inativo"
-                                                onClick={e => setConsultaStatus('3')}
-                                            />
-                                            <span className="span-checkbox"></span>
-                                        </label>
-                                    </div>
-                                </div>
+                                {filtroSearchField("tamanho", "adulto-ou-infantil", setConsultaAdulto, ["Ambos", "Adulto", "Infantil"], ['', true, false])}
 
-                                <div className="radio-container">
-                                    <div>
-                                        <label className="container-checkbox">Conjunto
-                                            <input
-                                                type="checkbox"
-                                                name="conjunto"
-                                                onClick={e => setConsultaConjunto(e.target.checked ? true : '')}
-                                            />
-                                            <span className="span-checkbox"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className='select-in-filter'>
-                                    <label htmlFor="colecao">Coleção: </label>
-                                    <select
-                                        name="colecao"
-                                        value={viewColecao}
-                                        onChange={e => {
-                                            console.log(e.target.value)
-                                            setConsultaColecao(e.target.value)
-                                            setViewColecao(e.target.value)
-                                        }}
-                                    >
-                                        <option value=""></option>
-                                        {colecoes.map((a) => (
-                                            <option value={a.id}>{a.nomeColecao}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                                {filtroSearchField("status", "ativo-ou-inativo", setConsultaStatus, ["Ativo", "Inativo", "Desenvolvimento"], ["1", "2", "3"])}
+
+                                {booleanSearchField("conjunto", "Conjunto", setConsultaConjunto, true, '')}
+                                
+                                {selectSearchField("colecao", "Coleção: ", "", setConsultaColecao, "id", setViewColecao, viewColecao, colecoes, "nomeColecao")}
 
                             </div>
                         </div>
@@ -267,7 +148,7 @@ export default function Produtos() {
                 </div>
 
                 <div className='espaco-botoes-acoes'>
-                    <button 
+                    <button
                         onClick={e => navigate('/produto/novo')}>
                         <BiMessageSquareAdd className='icon' />
                         <span>Criar Produto</span>
@@ -341,7 +222,7 @@ export default function Produtos() {
                                             <td>{a.classeProduto.nomeClasse}</td>
                                             <td>
                                                 <button type="button"
-                                                onClick={e => navigate("/produto/alterar/" + a.id)}>
+                                                    onClick={e => navigate("/produto/alterar/" + a.id)}>
                                                     <BiMessageSquareEdit />
                                                 </button>
                                                 <button type="button">

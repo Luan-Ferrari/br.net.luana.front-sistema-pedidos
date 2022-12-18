@@ -15,12 +15,6 @@ import { marcarBooleanButon, marcarCheckboxesByIds } from '../../DefaultComponen
 import api from '../../../services/api'
 import { booleanButtonField, defaultField, selectField, checkboxListField, checkboxListFieldComPreSelecionados } from '../../DefaultComponents/form-fields/form-fields';
 
-
-//ATENCAO ATENCAO ATENCAO ATENCAO
-
-//Testar primeiro o PUT metodo para uma única atualização, porque no back end da API já existe esse método
-
-
 export default function AlterarProduto() {
 
     const accessToken = localStorage.getItem('accessToken');
@@ -65,7 +59,9 @@ export default function AlterarProduto() {
     async function loadItemASerAlterado() {
         await api.get('/produto/' + id_alterado, header)
             .then(response => {
+
                 const item = response.data;
+
                 setId(item.id);
                 setCodigoProduto(item.codigoProduto);
                 setDescricao(item.descricao);
@@ -149,46 +145,60 @@ export default function AlterarProduto() {
     }, [])
 
     return (
-        <div className='modal-container'>
+        <div className='page-container'>
+            <div className='conteudo'>
 
-            <div className="janela-padrao">
-                <div className="barra-titulo-janela-padrao">
-                    <p>Alterar Produto</p>
+                {createDefaultHeader()}
+
+                <div className="linha-navegacao">
+                    <div>
+                        <p>INÍCIO</p>
+                        <p> &gt; </p>
+                        <p>PRODUTO</p>
+                        <p> &gt; </p>
+                        <p>ALTERAR PRODUTO</p>
+                    </div>
                 </div>
 
-                <div className="conteudo-janela-padrao">
-                    <form onSubmit={alterarProduto}>
-                        
-                        {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
+                <div className="janela-padrao">
+                    <div className="barra-titulo-janela-padrao">
+                        <p>Alterar Produto</p>
+                    </div>
 
-                        {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
+                    <div className="conteudo-janela-padrao">
+                        <form onSubmit={alterarProduto}>
 
-                        {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
-                        {marcarBooleanButon('Sim', 'Não', (conjunto == true ? 'Sim' : 'Não'))}
+                            {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
 
-                        {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
-                        {marcarBooleanButon('Adulto', 'Infantil', (adulto == true ? 'Adulto' : 'Infantil'))}
+                            {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
 
-                        {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
+                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
+                            {marcarBooleanButon('Sim', 'Não', (conjunto == true ? 'Sim' : 'Não'))}
 
-                        {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
+                            {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
+                            {marcarBooleanButon('Adulto', 'Infantil', (adulto == true ? 'Adulto' : 'Infantil'))}
 
-                        {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto,
-                            "id", setViewClasseProduto, viewClasseProduto, listaClasses, "nomeClasse")}
+                            {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
 
-                        {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto,
-                            "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
+                            {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
 
-                        {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao")}
-                        {marcarCheckboxesByIds(colecoes, '#colecoes input')}
+                            {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto,
+                                "id", setViewClasseProduto, viewClasseProduto, listaClasses, "nomeClasse")}
 
-                        {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, "descricao")}
-                        {marcarCheckboxesByIds(tamanhosAceitos, '#tamanhos input')}
+                            {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto,
+                                "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
 
-                        <div id="botao-submit">
-                            <button type="submit">Adicionar</button>
-                        </div>
-                    </form>
+                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao")}
+                            {marcarCheckboxesByIds(colecoes, '#colecoes input')}
+
+                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, "descricao")}
+                            {marcarCheckboxesByIds(tamanhosAceitos, '#tamanhos input')}
+
+                            <div id="botao-submit">
+                                <button type="submit">Alterar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
