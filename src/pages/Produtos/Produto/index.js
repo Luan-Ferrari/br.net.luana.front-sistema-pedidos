@@ -17,7 +17,7 @@ import { pesquisadorComplexo } from '../../DefaultComponents/manipuladores/pesqu
 
 import api from '../../../services/api';
 import { criarListaItensSelecionados, selectAllCheckbox } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
-import { booleanSearchField, buttonSearchField, filtroSearchField, inputSearchField, selectSearchField } from '../../DefaultComponents/search-fields/search-fields';
+import { booleanSearchField, buttonSearchField, filtroSearchField, inputSearchField, selectSearchField } from '../../DefaultComponents/fields/search-fields/search-fields';
 
 export default function Produtos() {
 
@@ -31,8 +31,9 @@ export default function Produtos() {
 
     const [listaCompleta, setListaCompleta] = useState([]);
 
-    const [classesProdutos, setClassesProdutos] = useState([]);
-    const [colecoes, setColecoes] = useState([]);
+    const listaClassesProdutos = JSON.parse(sessionStorage.getItem('listaClassesProdutos'));
+    const listaColecoes = JSON.parse(sessionStorage.getItem('listaColecoes'));
+
     const [viewColecao, setViewColecao] = useState([]);
 
     //DAQUI PRA BAIXO LÓGICA PARA CONSULTAS //
@@ -74,25 +75,8 @@ export default function Produtos() {
             })
     }
 
-    async function loadClassesProdutos() {
-        await api.get('/classeProduto', header)
-            .then(response => {
-                setClassesProdutos(response.data)
-            })
-    }
-
-    async function loadColecoes() {
-        await api.get('/colecao', header)
-            .then(response => {
-                setColecoes(response.data)
-            })
-    }
-
-
     useEffect(() => {
         loadProdutos();
-        loadClassesProdutos();
-        loadColecoes();
     }, [])
 
 
@@ -127,7 +111,7 @@ export default function Produtos() {
                             <div className='botoes-consultas-container'>
                                 <label>Buscar por:</label>
 
-                                {buttonSearchField(classesProdutos, setConsultaClasse, "classes", "id", "nomeClasse")}
+                                {buttonSearchField(listaClassesProdutos, setConsultaClasse, "classes", "id", "nomeClasse")}
 
                             </div>
 
@@ -140,7 +124,7 @@ export default function Produtos() {
 
                                 {booleanSearchField("conjunto", "Conjunto", setConsultaConjunto, true, '')}
                                 
-                                {selectSearchField("colecao", "Coleção: ", "", setConsultaColecao, "id", setViewColecao, viewColecao, colecoes, "nomeColecao")}
+                                {selectSearchField("colecao", "Coleção: ", "", setConsultaColecao, "id", setViewColecao, viewColecao, listaColecoes, "nomeColecao")}
 
                             </div>
                         </div>

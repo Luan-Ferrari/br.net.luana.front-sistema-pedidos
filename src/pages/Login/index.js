@@ -5,6 +5,7 @@ import api from '../../services/api';
 
 import logoImage from "../../assets/logo.svg"
 import padlock from "../../assets/padlock2.svg"
+import { carregarRecursosDaAPI } from '../DefaultComponents/loaders/loader';
 
 export default function Login() {
 
@@ -26,8 +27,8 @@ export default function Login() {
 
             localStorage.setItem('usuario', response.headers.usuario);
             localStorage.setItem('accessToken', response.headers.authorization);
-
-            navigate('/produto');
+            
+            navigate('/carregar');
         } catch (err) {
           alert('Login failed! Try again!')
         }

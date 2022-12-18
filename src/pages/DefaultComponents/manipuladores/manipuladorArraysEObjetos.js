@@ -55,9 +55,7 @@ export function marcarCheckboxesByIds (listaSelecionados, seletor) {
 
 export function marcarBooleanButon ( textoOpcaoUm, textoOpcaoDois, opcaoMarcada) {
     let inputUm = document.getElementById(textoOpcaoUm);
-    console.log(inputUm);
     let inputDois = document.getElementById(textoOpcaoDois);
-    console.log(inputDois);
 
     if ( opcaoMarcada == textoOpcaoUm && inputUm != null) {
         inputUm.checked = true;

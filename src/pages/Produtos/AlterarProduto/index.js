@@ -37,18 +37,18 @@ export default function AlterarProduto() {
     const [valorAtacado, setValorAtacado] = useState('');
     const [valorVarejo, setValorVarejo] = useState('');
 
-    const [listaStatusProduto, setListaStatusProduto] = useState([]);
+    const listaStatusProduto = JSON.parse(sessionStorage.getItem('listaStatusProduto'));
     const [statusProduto, setStatusProduto] = useState('');
     const [viewStatusProduto, setViewStatusProduto] = useState('');
 
-    const [listaClasses, setListaClasses] = useState([]);
+    const listaClassesProdutos = JSON.parse(sessionStorage.getItem('listaClassesProdutos'));
     const [classeProduto, setClasseProduto] = useState('');
     const [viewClasseProduto, setViewClasseProduto] = useState('');
 
-    const [listaColecoes, setListaColecoes] = useState([]);
+    const listaColecoes = JSON.parse(sessionStorage.getItem('listaColecoes'));
     const [colecoes, setColecoes] = useState([]);
 
-    const [listaTamanhos, setListaTamanhos] = useState([]);
+    const listaTamanhos = JSON.parse(sessionStorage.getItem('listaTamanhos'))
     const [tamanhosAceitos, setTamanhosAceitos] = useState([]);
 
 
@@ -77,34 +77,6 @@ export default function AlterarProduto() {
                 setViewStatusProduto(item.statusProduto.id);
                 setViewClasseProduto(item.classeProduto.id);
 
-            })
-    }
-
-    async function loadClasses() {
-        await api.get('/classeProduto', header)
-            .then(response => {
-                setListaClasses(response.data)
-            })
-    }
-
-    async function loadColecoes() {
-        await api.get('/colecao', header)
-            .then(response => {
-                setListaColecoes(response.data)
-            })
-    }
-
-    async function loadStatusProduto() {
-        await api.get('/enums/statusProduto', header)
-            .then(response => {
-                setListaStatusProduto(response.data)
-            })
-    }
-
-    async function loadTamanhos() {
-        await api.get('/enums/tamanho', header)
-            .then(response => {
-                setListaTamanhos(response.data)
             })
     }
 
@@ -138,10 +110,6 @@ export default function AlterarProduto() {
 
     useEffect(() => {
         loadItemASerAlterado();
-        loadStatusProduto();
-        loadTamanhos();
-        loadClasses();
-        loadColecoes();
     }, [])
 
     return (
@@ -183,7 +151,7 @@ export default function AlterarProduto() {
                             {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
 
                             {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto,
-                                "id", setViewClasseProduto, viewClasseProduto, listaClasses, "nomeClasse")}
+                                "id", setViewClasseProduto, viewClasseProduto, listaClassesProdutos, "nomeClasse")}
 
                             {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto,
                                 "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
