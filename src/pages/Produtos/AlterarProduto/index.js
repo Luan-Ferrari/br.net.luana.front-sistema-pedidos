@@ -13,21 +13,12 @@ import { createDefaultHeader } from '../../DefaultComponents/header/header';
 import { marcarBooleanButon, marcarCheckboxesByIds } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 
 import api from '../../../services/api'
-import { booleanButtonField, defaultField, selectField, checkboxListField, checkboxListFieldComPreSelecionados } from '../../DefaultComponents/form-fields/form-fields';
+import { booleanButtonField, defaultField, selectField, checkboxListField, checkboxListFieldComPreSelecionados } from '../../DefaultComponents/fields/form-fields/form-fields';
+import headerAuthorization from '../../DefaultComponents/authorization/authorization';
 
 export default function AlterarProduto() {
 
-    const accessToken = localStorage.getItem('accessToken');
-
-    const header = {
-        headers: {
-            Authorization: accessToken
-        }
-    }
-
     const { id_alterado } = useParams();
-
-    const [itemASerAlterado, setItemASerAlterado] = useState({});
 
     const [id, setId] = useState(null);
     const [codigoProduto, setCodigoProduto] = useState('');
@@ -57,7 +48,7 @@ export default function AlterarProduto() {
     const obj = new Object();
 
     async function loadItemASerAlterado() {
-        await api.get('/produto/' + id_alterado, header)
+        await api.get('/produto/' + id_alterado, headerAuthorization())
             .then(response => {
 
                 const item = response.data;
@@ -98,7 +89,7 @@ export default function AlterarProduto() {
         }
 
         try {
-            const response = await api.put('/produto/' + id, data, header)
+            const response = await api.put('/produto/' + id, data, headerAuthorization())
             navigate('/produto')
         } catch (err) {
             for (const [erro, mensagem] of Object.entries(err.response.data)) {

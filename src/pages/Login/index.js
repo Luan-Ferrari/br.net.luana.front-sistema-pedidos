@@ -25,8 +25,8 @@ export default function Login() {
         try {
             const response = await api.post('/login', data);
 
-            localStorage.setItem('usuario', response.headers.usuario);
-            localStorage.setItem('accessToken', response.headers.authorization);
+            sessionStorage.setItem('usuario', response.headers.usuario);
+            sessionStorage.setItem('accessToken', response.headers.authorization);
             
             navigate('/carregar');
         } catch (err) {

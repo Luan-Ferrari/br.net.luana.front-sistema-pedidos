@@ -9,17 +9,11 @@ import './styles.css';
 import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
 import api from '../../../services/api'
-import { booleanButtonField, defaultField, selectField, checkboxListField } from '../../DefaultComponents/form-fields/form-fields';
+import { booleanButtonField, defaultField, selectField, checkboxListField } from '../../DefaultComponents/fields/form-fields/form-fields';
+import headerAuthorization from '../../DefaultComponents/authorization/authorization';
 
 export default function NovoProduto() {
 
-    const accessToken = localStorage.getItem('accessToken');
-
-    const header = {
-        headers: {
-            Authorization: accessToken
-        }
-    }
 
     const [id, setId] = useState(null);
     const [codigoProduto, setCodigoProduto] = useState('');
@@ -64,7 +58,7 @@ export default function NovoProduto() {
         }
 
         try {
-            const response = await api.post('/produto', data, header)
+            const response = await api.post('/produto', data, headerAuthorization())
             navigate('/produto')
         } catch (err) {
             for (const [erro, mensagem] of Object.entries(err.response.data)) {

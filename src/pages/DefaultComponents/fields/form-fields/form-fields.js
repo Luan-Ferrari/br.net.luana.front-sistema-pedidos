@@ -1,4 +1,4 @@
-import { criarListaItensSelecionados, marcarCheckboxesByIds } from '../manipuladores/manipuladorArraysEObjetos';
+import { criarListaItensSelecionados, marcarCheckboxesByIds } from '../../manipuladores/manipuladorArraysEObjetos';
 
 
 export function defaultField(identificador, labelText, classe, value, setter) {

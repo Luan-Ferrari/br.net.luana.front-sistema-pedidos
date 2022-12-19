@@ -18,16 +18,9 @@ import { pesquisadorComplexo } from '../../DefaultComponents/manipuladores/pesqu
 import api from '../../../services/api';
 import { criarListaItensSelecionados, selectAllCheckbox } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 import { booleanSearchField, buttonSearchField, filtroSearchField, inputSearchField, selectSearchField } from '../../DefaultComponents/fields/search-fields/search-fields';
+import headerAuthorization from '../../DefaultComponents/authorization/authorization';
 
 export default function Produtos() {
-
-    const accessToken = localStorage.getItem('accessToken');
-
-    const header = {
-        headers: {
-            Authorization: accessToken
-        }
-    }
 
     const [listaCompleta, setListaCompleta] = useState([]);
 
@@ -69,7 +62,7 @@ export default function Produtos() {
     const navigate = useNavigate();
 
     async function loadProdutos() {
-        await api.get('/produto', header)
+        await api.get('/produto', headerAuthorization())
             .then(response => {
                 setListaCompleta(response.data)
             })

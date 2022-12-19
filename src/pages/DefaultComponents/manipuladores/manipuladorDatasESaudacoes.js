@@ -26,6 +26,6 @@ function dataComDoisDigitos(valor) {
 }
 
 export function buildSaudacao() {
-    let saudacao = "Olá, " + localStorage.usuario;
+    let saudacao = "Olá, " + sessionStorage.getItem('usuario');
     return saudacao;
 }
