@@ -16,7 +16,7 @@ import { createDefaultHeader } from '../../DefaultComponents/header/header';
 import { pesquisadorComplexo } from '../../DefaultComponents/manipuladores/pesquisador';
 
 import api from '../../../services/api';
-import { criarListaItensSelecionados, selectAllCheckbox } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
+import { criarListaItensSelecionados, formatadorPreco, selectAllCheckbox } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 import { booleanSearchField, buttonSearchField, filtroSearchField, inputSearchField, selectSearchField } from '../../DefaultComponents/fields/search-fields/search-fields';
 import headerAuthorization from '../../DefaultComponents/authorization/authorization';
 
@@ -116,7 +116,7 @@ export default function Produtos() {
                                 {filtroSearchField("status", "ativo-ou-inativo", setConsultaStatus, ["Ativo", "Inativo", "Desenvolvimento"], ["1", "2", "3"])}
 
                                 {booleanSearchField("conjunto", "Conjunto", setConsultaConjunto, true, '')}
-                                
+
                                 {selectSearchField("colecao", "Coleção: ", "", setConsultaColecao, "id", setViewColecao, viewColecao, listaColecoes, "nomeColecao")}
 
                             </div>
@@ -135,7 +135,16 @@ export default function Produtos() {
                         <span>Alterar Relação</span>
                     </button>
                     <button
-                        onClick={e => criarListaItensSelecionados(listaFiltrada, '.listagem-itens tbody .container-checkbox input')}>
+                        onClick={e => {
+                            sessionStorage.setItem(
+                                'listaProdutosSelecionados',
+                                JSON.stringify(
+                                    criarListaItensSelecionados(listaFiltrada, '.listagem-itens tbody .container-checkbox input')
+                                )
+
+                            )
+                            navigate('/produto/alterar/selecao')
+                        }}>
                         <BiMessageSquareCheck className='icon' />
                         <span>Alterar Seleção</span>
                     </button>
@@ -194,8 +203,9 @@ export default function Produtos() {
                                             <td>{a.codigoProduto}</td>
                                             <td>{a.descricao}</td>
                                             <td>{a.adulto == true ? "Adulto" : "Infantil"}</td>
-                                            <td>{a.valorAtacado}</td>
-                                            <td>{a.valorVarejo}</td>
+                                            {/* <td>{a.valorAtacado}</td> */}
+                                            <td>{formatadorPreco(a.valorAtacado)}</td>
+                                            <td>{formatadorPreco(a.valorVarejo)}</td>
                                             <td>{a.classeProduto.nomeClasse}</td>
                                             <td>
                                                 <button type="button"

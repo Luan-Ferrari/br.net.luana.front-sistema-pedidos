@@ -4,7 +4,6 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import '../../DefaultComponents/janelas.css';
 import '../../DefaultComponents/boolean-button.css'
 import '../../DefaultComponents/checkbox-container.css'
-import '../../DefaultComponents/modal.css'
 import './styles.css';
 
 // import { MdCheckBox } from 'react-icons/md'

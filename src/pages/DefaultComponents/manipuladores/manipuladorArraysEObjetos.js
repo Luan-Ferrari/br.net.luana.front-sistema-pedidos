@@ -23,46 +23,93 @@ export function limparCheckboxesSelecionados() {
     selectAllCheckbox(checkboxSelectAll.checked, '.listagem-itens tbody .container-checkbox input');
 }
 
-export function criarListaItensSelecionados (lista, seletor) {
+export function criarListaItensSelecionados(lista, seletor) {
     let checkboxes = document.querySelectorAll(seletor);
     let quantidadeCheckboxes = checkboxes.length;
 
     let listaSelecionados = []
 
-    for(let i = 0; i < quantidadeCheckboxes; i++) {
-        if(checkboxes[i].checked) {
+    for (let i = 0; i < quantidadeCheckboxes; i++) {
+        if (checkboxes[i].checked) {
             listaSelecionados.push(lista[i])
         }
     }
-    
+
     return listaSelecionados;
 }
 
-export function marcarCheckboxesByIds (listaSelecionados, seletor) {
+export function marcarCheckboxesByIds(listaSelecionados, seletor) {
 
     let checkboxes = document.querySelectorAll(seletor);
     let quantidadeSelecionados = listaSelecionados.length;
     let quantidadeCheckboxes = checkboxes.length;
 
-    for(let i = 0; i < quantidadeSelecionados; i++) {
+    for (let i = 0; i < quantidadeSelecionados; i++) {
         for (let j = 0; j < quantidadeCheckboxes; j++) {
             if (listaSelecionados[i].id == checkboxes[j].value) {
                 checkboxes[j].checked = true;
-            } 
+            }
         }
     }
 }
 
-export function marcarBooleanButon ( textoOpcaoUm, textoOpcaoDois, opcaoMarcada) {
+export function marcarBooleanButon(textoOpcaoUm, textoOpcaoDois, opcaoMarcada) {
     let inputUm = document.getElementById(textoOpcaoUm);
     let inputDois = document.getElementById(textoOpcaoDois);
 
-    if ( opcaoMarcada == textoOpcaoUm && inputUm != null) {
+    if (opcaoMarcada == textoOpcaoUm && inputUm != null) {
         inputUm.checked = true;
-    } else if ( opcaoMarcada == textoOpcaoDois && inputDois != null) {
+    } else if (opcaoMarcada == textoOpcaoDois && inputDois != null) {
         inputDois.checked = true;
     }
 }
+
+export function atualizadorDePrecos(valorOriginal, tipoCorrecao, valorCorrecao, valorArredondamento) {
+
+    let valorAtualizado = valorOriginal;
+
+    if (tipoCorrecao == 'Valor Único') {
+        valorAtualizado = valorCorrecao;
+    } else if (tipoCorrecao == 'Valor Fixo') {
+        valorAtualizado += parseFloat(valorCorrecao);
+    } else if (tipoCorrecao == 'Porcentagem') {
+        valorAtualizado += (valorOriginal * (valorCorrecao / 100));
+    }
+
+    if (valorArredondamento != null) {
+        return igualarCasasDecimais(valorAtualizado, valorArredondamento);
+    } else {
+        return valorAtualizado;
+    }
+}
+
+export function igualarCasasDecimais(valor, valorArredondamento) {
+
+    let valorInteiro = Math.trunc(valor);
+    valor = valor.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+
+    valorArredondamento = valorArredondamento / 100;
+
+    let diferenca = Math.abs(valor - (valorInteiro + valorArredondamento))
+        .toLocaleString('en-IN', { maximumFractionDigits: 2 });
+
+    console.log("diferenca de " + valor + " e " + (valorInteiro + valorArredondamento) + " é " + diferenca)
+
+    if (diferenca == 0) {
+        return valor;
+    } else if (diferenca <= 0.5) {
+        return valorInteiro + valorArredondamento;
+    } else if (diferenca > 0.5 && valorArredondamento >= diferenca) {
+        return (valorInteiro - 1) + valorArredondamento;
+    } else if (diferenca > 0.5 && valorArredondamento < diferenca) {
+        return (valorInteiro + 1) + valorArredondamento;
+    }
+}
+
+export function formatadorPreco(valor) {
+    return (valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })
+}
+
 
 
 

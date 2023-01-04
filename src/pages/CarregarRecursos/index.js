@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
-import api from '../../services/api';
 
 import { carregarRecursosDaAPI } from '../DefaultComponents/loaders/loader';
 
@@ -11,12 +10,12 @@ export default function CarregarRecursos() {
 
     const navigate = useNavigate();
 
-    async function carregarRecursos () {
+    async function carregarRecursos() {
 
         await carregarRecursosDaAPI();
-            
+
         navigate('/produto');
-  
+
     }
 
     useEffect(() => {
@@ -24,8 +23,14 @@ export default function CarregarRecursos() {
     }, [])
 
     return (
-    <div className="load-container">
-      <p>Os recursos estãos sendo recebidos da API</p>
-    </div>
+            <div id="load">
+                <div>G</div>
+                <div>N</div>
+                <div>I</div>
+                <div>D</div>
+                <div>A</div>
+                <div>O</div>
+                <div>L</div>
+            </div>
     )
 }

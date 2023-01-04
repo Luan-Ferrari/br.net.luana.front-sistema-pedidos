@@ -6,6 +6,7 @@ import Produto from './pages/Produtos/Produto'
 import NovoProduto from './pages/Produtos/NovoProduto';
 import AlterarProduto from './pages/Produtos/AlterarProduto';
 import CarregarRecursos from './pages/CarregarRecursos';
+import AlterarProdutosSelecionados from './pages/Produtos/AlterarSelecao';
 
 export default function AppRoutes() {
     return (
@@ -16,6 +17,7 @@ export default function AppRoutes() {
                 <Route path="/produto" element={<Produto />}/>
                 <Route path="/produto/novo" element={<NovoProduto />}/>
                 <Route path="/produto/alterar/:id_alterado" element={<AlterarProduto />}/>
+                <Route path="/produto/alterar/selecao" element={<AlterarProdutosSelecionados />}/>
             </Routes>
         </BrowserRouter>
     );
