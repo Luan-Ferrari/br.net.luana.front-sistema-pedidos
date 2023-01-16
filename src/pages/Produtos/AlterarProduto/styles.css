@@ -1,4 +1,4 @@
-.conteudo-janela-padrao form{
+.conteudo-janela-padrao #form-alterar-produto{
     display: grid;
     grid-template-areas: 
     'codigo descricao descricao descricao adulto conjunto'

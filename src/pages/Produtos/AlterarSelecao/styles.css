@@ -1,0 +1,34 @@
+.conteudo-janela-padrao #form-alterar-selecao{
+    display: grid;
+    grid-template-areas: 
+    'valor valor . status status . '
+    'valor valor . classe classe .'
+    'colecoes colecoes . . . .'
+    '. . . . . submit';
+}
+
+#container-alteracao-preco {
+    grid-area: valor;
+    border: 2px solid #676767;
+    border-radius: 15px;
+}
+
+#classe-produto {
+    grid-area: classe;
+}
+
+#status-produto {
+    grid-area: status;
+}
+
+#colecoes {
+    grid-area: colecoes;
+}
+
+#botao-submit {
+    grid-area: submit;
+}
+
+
+
+

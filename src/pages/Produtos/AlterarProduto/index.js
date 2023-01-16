@@ -124,7 +124,7 @@ export default function AlterarProduto() {
                     </div>
 
                     <div className="conteudo-janela-padrao">
-                        <form onSubmit={alterarProduto}>
+                        <form id='form-alterar-produto' onSubmit={alterarProduto}>
 
                             {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
 

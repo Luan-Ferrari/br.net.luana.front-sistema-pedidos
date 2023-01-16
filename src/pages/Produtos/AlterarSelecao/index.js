@@ -68,7 +68,7 @@ export default function AlterarProdutosSelecionados() {
         console.log(data);
 
         try {
-            const response = await api.put('/produto/relacao', data, headerAuthorization())
+            const response = await api.put('/produto/lista/selecao', data, headerAuthorization())
             navigate('/produto')
         } catch (err) {
             for (const [erro, mensagem] of Object.entries(err.response.data)) {
@@ -102,9 +102,9 @@ export default function AlterarProdutosSelecionados() {
                     </div>
 
                     <div className="conteudo-janela-padrao">
-                        <form onSubmit={alterarProdutosSelecionados}>
+                        <form id='form-alterar-selecao' onSubmit={alterarProdutosSelecionados}>
 
-                            <div className='container-alteracao-preco'>
+                            <div className='container-alteracao-preco' id='container-alteracao-preco'>
                                 <div id='tipoAlteracaoDePreco'>
                                     <label htmlFor='tipoAlteracaoDePreco'>Tipo de Alteração de Preço</label>
                                     <select

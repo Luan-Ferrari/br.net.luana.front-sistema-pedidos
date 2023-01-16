@@ -1,0 +1,39 @@
+.conteudo-janela-padrao #incluir-objeto-relacao{
+    display: grid;
+    grid-template-areas: 
+    'codigo valor-atacado valor-varejo add-button '
+    /* 'valor valor . classe classe .'
+    'colecoes colecoes . . . .'
+    '. . . . . submit'; */
+}
+
+#codigo-relacao {
+    grid-area: codigo;
+}
+
+#valor-atacado-relacao {
+    grid-area: valor-atacado;
+}
+
+#valor-varejo-relacao {
+    grid-area: valor-varejo;
+}
+
+#incluir-objeto-relacao button {
+    grid-area: add-button;
+    margin-top: 0px;
+    height: 65px;
+    line-height: 25px;
+}
+
+#botao-submit {
+    grid-area: submit;
+}
+
+#incluir-objeto-relacao div {
+    margin: 10px;
+}
+
+
+
+

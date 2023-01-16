@@ -110,6 +110,10 @@ export function formatadorPreco(valor) {
     return (valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })
 }
 
+export function ordenarPorCodigoProduto(objA, objB) {
+    return objA.codigoProduto - objB.codigoProduto;
+}
+
 
 
 
@@ -125,7 +129,7 @@ export function formatadorPreco(valor) {
 //     }
 // }
 
-// export function addOrRemoveItens(e, array) {
+// export function addOrRemoveValues(e, array) {
 //     let arrayClone = Object.assign([], array);
 
 //     if (arrayClone.includes(e.target.value)) {
@@ -139,6 +143,28 @@ export function formatadorPreco(valor) {
 
 //     return arrayClone;
 // }
+
+export function addOrRemoveObjects(item, array, propComparacao) {
+    let arrayClone = Object.assign([], array);
+    let tamanhoArray = array.length;
+    let jaPossui = false;
+    let possicaoItem = 0;
+
+    for (let i = 0; i < tamanhoArray; i++) {
+        if (array[i][propComparacao] == item[propComparacao]) {
+            possicaoItem = i;
+            jaPossui = true;
+        }
+    }
+
+    if (jaPossui) {
+        arrayClone.splice(possicaoItem, 1);
+    } else {
+        arrayClone.push(item)
+    }
+
+    return arrayClone;
+}
 
 // export function creatObjectById(idObject) {
 //     return { id: idObject }

@@ -90,7 +90,7 @@ export default function NovoProduto() {
                     </div>
 
                     <div className="conteudo-janela-padrao">
-                        <form onSubmit={criarNovoProduto}>
+                        <form id='form-novo-produto' onSubmit={criarNovoProduto}>
                    
                             {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
 

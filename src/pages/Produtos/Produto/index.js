@@ -13,12 +13,13 @@ import '../../DefaultComponents/listagens.css';
 
 import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
-import { pesquisadorComplexo } from '../../DefaultComponents/manipuladores/pesquisador';
+import { pesquisadorComplexo, pesquisadorSimples } from '../../DefaultComponents/manipuladores/pesquisador';
 
 import api from '../../../services/api';
-import { criarListaItensSelecionados, formatadorPreco, selectAllCheckbox } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
+import { criarListaItensSelecionados, formatadorPreco, selectAllCheckbox, ordenarPorCodigoProduto } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 import { booleanSearchField, buttonSearchField, filtroSearchField, inputSearchField, selectSearchField } from '../../DefaultComponents/fields/search-fields/search-fields';
 import headerAuthorization from '../../DefaultComponents/authorization/authorization';
+import { pdfListaPrecos, testeGeracaoPdf } from '../../DefaultComponents/pdf/geradorPdf';
 
 export default function Produtos() {
 
@@ -56,7 +57,7 @@ export default function Produtos() {
         //ATENÇÃO: ESSE OBJETO DE PARAMETROS DEVE TER SEUS ATRIBUTOS COM OS NOMES EXATAMENTE IGUAIS AOS NOMES DOS ATRIBUTOS RETORNADOS DA API
     };
 
-    let listaFiltrada = pesquisadorComplexo(listaCompleta, listaParametrosConsulta);
+    let listaFiltrada = pesquisadorComplexo(listaCompleta, listaParametrosConsulta).sort(ordenarPorCodigoProduto);
     //DAQUI PRA CIMA, LÓGICA PARA CONSULTAS //
 
     const navigate = useNavigate();
@@ -130,10 +131,15 @@ export default function Produtos() {
                         <BiMessageSquareAdd className='icon' />
                         <span>Criar Produto</span>
                     </button>
-                    <button>
+
+                    <button
+                        onClick={e => {
+                            navigate('/produto/alterar/relacao')
+                        }}>
                         <BiMessageSquareDots className='icon' />
                         <span>Alterar Relação</span>
                     </button>
+
                     <button
                         onClick={e => {
                             sessionStorage.setItem(
@@ -148,10 +154,17 @@ export default function Produtos() {
                         <BiMessageSquareCheck className='icon' />
                         <span>Alterar Seleção</span>
                     </button>
-                    <button>
+
+                    <button onClick={e => {
+                        pdfListaPrecos(criarListaItensSelecionados(listaFiltrada, '.listagem-itens tbody .container-checkbox input'),
+                            pesquisadorSimples(listaClassesProdutos, 'id', consultaClasse)[0].nomeClasse,
+                            (consultaAdulto == '' ? "Todos os Tamanhos" : consultaAdulto == false ? "Infantil" : "Adulto"),
+                            'valorAtacado')
+                    }}>
                         <BiMessageSquareDetail className='icon' />
-                        <span>Relatório</span>
+                        <span>Lista de Preços</span>
                     </button>
+
                     <button>
                         <BiMessageSquareError className='icon' />
                         <span>Sem Função</span>
@@ -177,7 +190,10 @@ export default function Produtos() {
                                                 <span className='span-checkbox'></span>
                                             </label>
                                         </th>
-                                        <th>Código</th>
+                                        <th>
+                                            Código
+                                            {/* <p onClick={listaFiltrada.sort(ordenarPorCodigo)}> &darr; </p> */}
+                                        </th>
                                         <th>Descrição</th>
                                         <th>Tamanhos</th>
                                         <th>Atacado</th>
@@ -203,7 +219,6 @@ export default function Produtos() {
                                             <td>{a.codigoProduto}</td>
                                             <td>{a.descricao}</td>
                                             <td>{a.adulto == true ? "Adulto" : "Infantil"}</td>
-                                            {/* <td>{a.valorAtacado}</td> */}
                                             <td>{formatadorPreco(a.valorAtacado)}</td>
                                             <td>{formatadorPreco(a.valorVarejo)}</td>
                                             <td>{a.classeProduto.nomeClasse}</td>
