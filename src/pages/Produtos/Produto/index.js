@@ -10,6 +10,7 @@ import "../../DefaultComponents/consultas.css";
 import '../../DefaultComponents/janelas.css';
 import './styles.css';
 import '../../DefaultComponents/listagens.css';
+import '../../DefaultComponents/modal.css';
 
 import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
@@ -18,6 +19,7 @@ import { pesquisadorComplexo, pesquisadorSimples } from '../../DefaultComponents
 import api from '../../../services/api';
 import { criarListaItensSelecionados, formatadorPreco, selectAllCheckbox, ordenarPorCodigoProduto } from '../../DefaultComponents/manipuladores/manipuladorArraysEObjetos';
 import { booleanSearchField, buttonSearchField, filtroSearchField, inputSearchField, selectSearchField } from '../../DefaultComponents/fields/search-fields/search-fields';
+import { booleanButtonField, defaultField } from '../../DefaultComponents/fields/form-fields/form-fields';
 import headerAuthorization from '../../DefaultComponents/authorization/authorization';
 import { pdfListaPrecos, testeGeracaoPdf } from '../../DefaultComponents/pdf/geradorPdf';
 
@@ -29,6 +31,13 @@ export default function Produtos() {
     const listaColecoes = JSON.parse(sessionStorage.getItem('listaColecoes'));
 
     const [viewColecao, setViewColecao] = useState([]);
+
+    //GERACAO LISTA DE PRECOS
+    const [tipoListaPrecos, setTipoListaPrecos] = useState([]);
+    const [anoListaPrecos, setAnoListaPrecos] = useState(0);
+    const [paginaInicialListaPrecos, setPaginaInicialListaPrecos] = useState(0);
+
+    //FIM GERACAO LISTA DE PRECOS
 
     //DAQUI PRA BAIXO LÓGICA PARA CONSULTAS //
     const [consultaCodigo, setConsultaCodigo] = useState('');
@@ -147,7 +156,6 @@ export default function Produtos() {
                                 JSON.stringify(
                                     criarListaItensSelecionados(listaFiltrada, '.listagem-itens tbody .container-checkbox input')
                                 )
-
                             )
                             navigate('/produto/alterar/selecao')
                         }}>
@@ -155,15 +163,55 @@ export default function Produtos() {
                         <span>Alterar Seleção</span>
                     </button>
 
-                    <button onClick={e => {
+                    {/* <button onClick={e => {
                         pdfListaPrecos(criarListaItensSelecionados(listaFiltrada, '.listagem-itens tbody .container-checkbox input'),
                             pesquisadorSimples(listaClassesProdutos, 'id', consultaClasse)[0].nomeClasse,
                             (consultaAdulto == '' ? "Todos os Tamanhos" : consultaAdulto == false ? "Infantil" : "Adulto"),
-                            'valorAtacado')
+                            ("valor" + tipoListaPrecos))
                     }}>
                         <BiMessageSquareDetail className='icon' />
                         <span>Lista de Preços</span>
+                    </button> */}
+
+                    <button onClick={e => {
+                        sessionStorage.setItem(
+                            'listaProdutosSelecionados',
+                            JSON.stringify(
+                                criarListaItensSelecionados(listaFiltrada, '.listagem-itens tbody .container-checkbox input')
+                            )
+                        )
+                    }}>
+                        <BiMessageSquareDetail className='icon' />
+                        <span>
+                            <label class='botao-modal-listaPrecos' for="open-modal-listaPrecos">
+                                Lista de Preços
+                            </label>
+                        </span>
                     </button>
+
+                    <input class="modal-state" id="open-modal-listaPrecos" type="checkbox" />
+                    <div class="modal">
+                        <label class="modal__bg" for="open-modal-listaPrecos"></label>
+                        <div class="modal__inner">
+                            <label class="modal__close" for="open-modal-listaPrecos"></label>
+
+                            <label class="modal-titulo">Configurações da Lista de Preços</label>
+
+                            {defaultField("ano-lista-preco", "Ano Lista", "texto-tam-1", anoListaPrecos, setAnoListaPrecos)}
+
+                            {defaultField("pagina-inicial-lista", "Página Inicial", "texto-tam-1", paginaInicialListaPrecos, setPaginaInicialListaPrecos)}
+
+                            {booleanButtonField("tipo-lista-precos", "Tipo de Lista", "Atacado", "Varejo", setTipoListaPrecos, "Atacado", "Varejo")}
+
+                            <button onClick={e => {
+                                pdfListaPrecos(JSON.parse(sessionStorage.getItem('listaProdutosSelecionados')),
+                                    pesquisadorSimples(listaClassesProdutos, 'id', consultaClasse)[0].nomeClasse,
+                                    (consultaAdulto == '' ? "Todos os Tamanhos" : consultaAdulto == false ? "Infantil" : "Adulto"),
+                                    ("valor" + tipoListaPrecos), anoListaPrecos, paginaInicialListaPrecos)
+                            }}>
+                                Gerar Lista</button>
+                        </div>
+                    </div>
 
                     <button>
                         <BiMessageSquareError className='icon' />
@@ -196,8 +244,32 @@ export default function Produtos() {
                                         </th>
                                         <th>Descrição</th>
                                         <th>Tamanhos</th>
-                                        <th>Atacado</th>
-                                        <th>Varejo</th>
+                                        <th>
+                                            {/* <div className='radio-container' id={"radio-container-tipoListaPreco"}>
+                                                <label className='container-checkbox'>
+                                                    <input
+                                                        type="radio"
+                                                        name="tipoListaPreco"
+                                                        onClick={e => setTipoListaPrecos("Atacado")}
+                                                    />
+                                                    <span className="span-checkbox"></span>
+                                                </label>
+                                            </div> */}
+                                            Atacado
+                                        </th>
+                                        <th>
+                                            {/* <div className='radio-container' id={"radio-container-tipoListaPreco"}>
+                                                <label className='container-checkbox'>
+                                                    <input
+                                                        type="radio"
+                                                        name="tipoListaPreco"
+                                                        onClick={e => setTipoListaPrecos("Varejo")}
+                                                    />
+                                                    <span className="span-checkbox"></span>
+                                                </label>
+                                            </div> */}
+                                            Varejo
+                                        </th>
                                         <th>Classe</th>
                                         <th>Ações</th>
                                     </tr>

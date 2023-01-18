@@ -15,18 +15,18 @@ export function defaultField(identificador, labelText, classe, value, setter) {
     )
 }
 
-export function booleanButtonField(identificador, labelText, textoOpcaoUm, textoOpcaoDois, setter) {
+export function booleanButtonField(identificador, labelText, textoOpcaoUm, textoOpcaoDois, setter, valorOpcaoUm = true, valorOpcaoDois = false) {
     return (
         <div className="boolean-button-container" id={identificador}>
             <label>{labelText}</label>
             <div className="boolean-button">
                 <input type="radio" id={textoOpcaoUm} name={identificador}
-                    onClick={e => setter(true)} />
+                    onClick={e => setter(valorOpcaoUm)} />
                 <label className="botao-um" htmlFor={textoOpcaoUm}>{textoOpcaoUm}</label>
             </div>
             <div className="boolean-button">
                 <input type="radio" id={textoOpcaoDois} name={identificador}
-                    onClick={e => setter(false)} />
+                    onClick={e => setter(valorOpcaoDois)} />
                 <label className="botao-dois" htmlFor={textoOpcaoDois}>{textoOpcaoDois}</label>
             </div>
         </div>
