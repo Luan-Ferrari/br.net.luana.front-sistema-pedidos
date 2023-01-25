@@ -1,7 +1,27 @@
 import { criarListaItensSelecionados, marcarCheckboxesByIds } from '../../manipuladores/manipuladorArraysEObjetos';
 
+// export function defaultField(identificador, labelText, classe, value, setter) {
+//     return (
+//         <div id={identificador}>
+//             <label htmlFor={identificador}>{labelText}</label>
+//             <input
+//                 name={identificador}
+//                 className={classe}
+//                 value={value}
+//                 onChange={e => setter(e.target.value)}
+//             />
+//         </div>
+//     )
+// }
+
+
+
+
 
 export function defaultField(identificador, labelText, classe, value, setter) {
+
+    //criar um elemento "global" no JS para que ele receba a informação daqui se tem algum campo não validado corretamente
+
     return (
         <div id={identificador}>
             <label htmlFor={identificador}>{labelText}</label>

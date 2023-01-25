@@ -23,8 +23,16 @@
   cursor: pointer;
 }
 
+.botao-modal {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
 .modal-state {
   display: none;
+  width: 100%;
+  height: 100%;
 }
 
 .modal-state:checked+.modal {
@@ -91,6 +99,7 @@ button span label {
   color: white;
   font-size: 16px;
   letter-spacing: 1.2px;
+  cursor: pointer;
 }
 
 
@@ -119,6 +128,8 @@ button span label {
   width: 100px;
   height: 40px;
   margin-top: 7px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .modal .boolean-button-container label {
@@ -129,4 +140,16 @@ button span label {
 .modal .boolean-button label {
   margin: 0;
   width: 100px;
+}
+
+.modal .boolean-button:nth-child(2) label {
+  left: 0px;
+  border-radius: 5px 0 0 5px;
+  /* border-style: solid none solid solid; */
+}
+
+.modal .boolean-button:nth-child(3) label {
+  left: 0px;
+  border-radius: 0 5px 5px 0;
+  /* border-style: solid solid solid none; */
 }

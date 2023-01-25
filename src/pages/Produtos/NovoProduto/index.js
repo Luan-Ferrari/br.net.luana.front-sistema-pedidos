@@ -10,7 +10,9 @@ import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
 import api from '../../../services/api'
 import { booleanButtonField, defaultField, selectField, checkboxListField } from '../../DefaultComponents/fields/form-fields/form-fields';
+import { validadorCamposDeTexto }  from '../../DefaultComponents/validadores/validadores';
 import headerAuthorization from '../../DefaultComponents/authorization/authorization';
+
 
 export default function NovoProduto() {
 
@@ -36,6 +38,10 @@ export default function NovoProduto() {
 
     const listaTamanhos = JSON.parse(sessionStorage.getItem('listaTamanhos'))
     const [tamanhosAceitos, setTamanhosAceitos] = useState([]);
+
+    const [formularioValido, setFormularioValido] = useState(false);
+
+    const [listaErrosFormulario, setListaErrosFormulario] = useState([]);
 
     const navigate = useNavigate();
 
@@ -90,9 +96,10 @@ export default function NovoProduto() {
                     </div>
 
                     <div className="conteudo-janela-padrao">
-                        <form id='form-novo-produto' onSubmit={criarNovoProduto}>
+                        <form id='form-novo-produto' onSubmit={ criarNovoProduto }>
                    
                             {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
+                            {validadorCamposDeTexto("codigo-produto", codigoProduto, {obrigatorio : true})}
 
                             {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
 
@@ -101,8 +108,10 @@ export default function NovoProduto() {
                             {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
 
                             {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
-
+                            {validadorCamposDeTexto("codigo-produto", codigoProduto, {obrigatorio : true, formato : "^[0-9]+[,][0-9]{2}$"})}
+                          
                             {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
+                            {validadorCamposDeTexto("codigo-produto", codigoProduto, {obrigatorio : true, formato : "^[0-9]+[,][0-9]{2}$"})}
 
                             {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto, 
                                 "id", setViewClasseProduto, viewClasseProduto, listaClassesProdutos, "nomeClasse")}

@@ -10,7 +10,9 @@ import "../../DefaultComponents/consultas.css";
 import '../../DefaultComponents/janelas.css';
 import './styles.css';
 import '../../DefaultComponents/listagens.css';
+import '../../DefaultComponents/boolean-button.css';
 import '../../DefaultComponents/modal.css';
+
 
 import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
@@ -163,16 +165,6 @@ export default function Produtos() {
                         <span>Alterar Seleção</span>
                     </button>
 
-                    {/* <button onClick={e => {
-                        pdfListaPrecos(criarListaItensSelecionados(listaFiltrada, '.listagem-itens tbody .container-checkbox input'),
-                            pesquisadorSimples(listaClassesProdutos, 'id', consultaClasse)[0].nomeClasse,
-                            (consultaAdulto == '' ? "Todos os Tamanhos" : consultaAdulto == false ? "Infantil" : "Adulto"),
-                            ("valor" + tipoListaPrecos))
-                    }}>
-                        <BiMessageSquareDetail className='icon' />
-                        <span>Lista de Preços</span>
-                    </button> */}
-
                     <button onClick={e => {
                         sessionStorage.setItem(
                             'listaProdutosSelecionados',
@@ -181,21 +173,22 @@ export default function Produtos() {
                             )
                         )
                     }}>
-                        <BiMessageSquareDetail className='icon' />
+                        {/* <BiMessageSquareDetail className='icon' /> */}
                         <span>
-                            <label class='botao-modal-listaPrecos' for="open-modal-listaPrecos">
+                            <label className='botao-modal' htmlFor="open-modal-listaPrecos">
+                                <BiMessageSquareDetail className='icon' />
                                 Lista de Preços
                             </label>
                         </span>
                     </button>
 
-                    <input class="modal-state" id="open-modal-listaPrecos" type="checkbox" />
-                    <div class="modal">
-                        <label class="modal__bg" for="open-modal-listaPrecos"></label>
-                        <div class="modal__inner">
-                            <label class="modal__close" for="open-modal-listaPrecos"></label>
+                    <input className="modal-state" id="open-modal-listaPrecos" type="checkbox" />
+                    <div className="modal">
+                        <label className="modal__bg" htmlFor="open-modal-listaPrecos"></label>
+                        <div className="modal__inner">
+                            <label className="modal__close" htmlFor="open-modal-listaPrecos"></label>
 
-                            <label class="modal-titulo">Configurações da Lista de Preços</label>
+                            <label className="modal-titulo">Configurações da Lista de Preços</label>
 
                             {defaultField("ano-lista-preco", "Ano Lista", "texto-tam-1", anoListaPrecos, setAnoListaPrecos)}
 
@@ -203,9 +196,10 @@ export default function Produtos() {
 
                             {booleanButtonField("tipo-lista-precos", "Tipo de Lista", "Atacado", "Varejo", setTipoListaPrecos, "Atacado", "Varejo")}
 
+
                             <button onClick={e => {
                                 pdfListaPrecos(JSON.parse(sessionStorage.getItem('listaProdutosSelecionados')),
-                                    pesquisadorSimples(listaClassesProdutos, 'id', consultaClasse)[0].nomeClasse,
+                                    (consultaClasse == '' ? '' : pesquisadorSimples(listaClassesProdutos, 'id', consultaClasse)[0].nomeClasse),
                                     (consultaAdulto == '' ? "Todos os Tamanhos" : consultaAdulto == false ? "Infantil" : "Adulto"),
                                     ("valor" + tipoListaPrecos), anoListaPrecos, paginaInicialListaPrecos)
                             }}>
@@ -244,32 +238,8 @@ export default function Produtos() {
                                         </th>
                                         <th>Descrição</th>
                                         <th>Tamanhos</th>
-                                        <th>
-                                            {/* <div className='radio-container' id={"radio-container-tipoListaPreco"}>
-                                                <label className='container-checkbox'>
-                                                    <input
-                                                        type="radio"
-                                                        name="tipoListaPreco"
-                                                        onClick={e => setTipoListaPrecos("Atacado")}
-                                                    />
-                                                    <span className="span-checkbox"></span>
-                                                </label>
-                                            </div> */}
-                                            Atacado
-                                        </th>
-                                        <th>
-                                            {/* <div className='radio-container' id={"radio-container-tipoListaPreco"}>
-                                                <label className='container-checkbox'>
-                                                    <input
-                                                        type="radio"
-                                                        name="tipoListaPreco"
-                                                        onClick={e => setTipoListaPrecos("Varejo")}
-                                                    />
-                                                    <span className="span-checkbox"></span>
-                                                </label>
-                                            </div> */}
-                                            Varejo
-                                        </th>
+                                        <th>Atacado</th>
+                                        <th>Varejo</th>
                                         <th>Classe</th>
                                         <th>Ações</th>
                                     </tr>

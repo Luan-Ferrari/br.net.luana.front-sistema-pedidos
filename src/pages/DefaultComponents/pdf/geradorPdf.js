@@ -1,21 +1,30 @@
 import { jsPDF } from "jspdf"
 import { formatadorPreco } from "../manipuladores/manipuladorArraysEObjetos"
 
-function tabelaListradaComLinhas(doc, numeroItem, posicaoHorizontalLinhas, espacamento, linhasAOcupar = 1) {
+function tabelaListradaComLinhas(doc, numeroItem, posicaoAtualTexto, espacamentoEntreLinhasPadrao, linhasAOcupar, espacoEntreTextoELinhaImpressa) {
 
     if (numeroItem % 2 == 0) {
         doc.setFillColor(255, 255, 255);
     } else {
         doc.setFillColor(230, 230, 230);
     }
-    doc.rect(9, (posicaoHorizontalLinhas - espacamento), 191, (espacamento * linhasAOcupar), "F");
+
+    let posicaoLinhaImpressa = posicaoAtualTexto + espacoEntreTextoELinhaImpressa + ((linhasAOcupar - 1) * espacamentoEntreLinhasPadrao);
+    let alturaRetangulo = linhasAOcupar * espacamentoEntreLinhasPadrao;
+    let inicioRetangulo = posicaoLinhaImpressa - alturaRetangulo;
+
+    doc.rect(9, inicioRetangulo, 191, alturaRetangulo, "F");
 
     doc.setLineWidth(0.5);
-    doc.line(9, (posicaoHorizontalLinhas - 0.2), 200, (posicaoHorizontalLinhas - 0.2));
+    doc.line(9, (posicaoLinhaImpressa - 0.2), 200, (posicaoLinhaImpressa - 0.2));
 
 }
 
-function montarCabecalhoENumerarPaginaListaPrecos(doc, titulo, tamanho, precos, ano, pagina = 0) {
+function montarNomeLista (titulo, tamanho, precos, ano) {
+    return ((titulo == '' ? "Diversos" : titulo) + " - " + tamanho + " - " + (precos == 'valorAtacado' ? 'Atacado' : 'Varejo') + ((ano == 0 || ano == '') ? '' : ' - ' + ano)).toString().toUpperCase()
+}
+
+function montarCabecalhoENumerarPaginaListaPrecos(doc, nomeLista, pagina = 0) {
 
     doc.setFont("times", "bolditalic")
     doc.setFontSize(26)
@@ -23,8 +32,7 @@ function montarCabecalhoENumerarPaginaListaPrecos(doc, titulo, tamanho, precos, 
 
     doc.setFont("helvetica", "bold")
     doc.setFontSize(13)
-    doc.text((titulo + " - " + tamanho + " - " + (precos == 'valorAtacado' ? 'Atacado' : 'Varejo') + ((ano == 0 || ano == '') ? '' : ' - ' + ano)).toString().toUpperCase(),
-        105, 40, null, null, "center")
+    doc.text(nomeLista, 105, 40, null, null, "center")
 
     if (pagina != 0) {
         doc.setFont("times", "italic")
@@ -46,52 +54,66 @@ export function pdfListaPrecos(lista, titulo, tamanho = "Ambos Tamanhos", precos
     let doc = new jsPDF()
 
     let qtdeItens = lista.length;
-    let posicaoHorizontalLinhas = posicaoHorizontalTexto + 2;
 
-    let qtdeItensPorPagina = 33;
+    let qtdeItensPorPagina = 32;
 
-    let itemAtual = 1;
+    let linhaAtual = 0;
 
     let numeroPagina = paginaInicial;
 
-    let linhasAOcupar = 1;
+    let nomeLista = montarNomeLista(titulo, tamanho, precos, ano);
 
-    montarCabecalhoENumerarPaginaListaPrecos(doc, titulo, tamanho, precos, ano, numeroPagina);
+
+    montarCabecalhoENumerarPaginaListaPrecos(doc, nomeLista, numeroPagina);
 
     for (let i = 0; i < qtdeItens; i++) {
 
         let comprimentoDescricao = lista[i].descricao.length;
         
-        if (comprimentoDescricao < 60) {
-            linhasAOcupar = 1
+        let linhasAOcupar = Math.ceil(comprimentoDescricao / 60)
+   
+        let posicaoAtualTexto = posicaoHorizontalTexto + (linhaAtual * espacamento);
+
+        tabelaListradaComLinhas(doc, i, posicaoAtualTexto, espacamento, linhasAOcupar, 2);
+        
+        doc.text((lista[i].codigoProduto).toString(), 10, posicaoAtualTexto)
+        doc.text(formatadorPreco(lista[i][precos]), 200, posicaoAtualTexto, null, null, 'right')
+        
+        if (linhasAOcupar == 1 ) {
+
+            doc.text((lista[i].descricao).toString(), 30, posicaoAtualTexto)
+
         } else {
-            linhasAOcupar = Math.ceil(comprimentoDescricao / 60)
+
+            let j = 1;
+            let textoAtual = lista[i].descricao;
+
+            while(j <= linhasAOcupar) {
+
+                doc.text(textoAtual.slice(0, 60), 30, posicaoAtualTexto)
+
+                textoAtual = textoAtual.substring(60);
+
+                (j == linhasAOcupar) ? linhaAtual = linhaAtual : linhaAtual++;
+                posicaoAtualTexto = posicaoHorizontalTexto + (linhaAtual * espacamento);
+
+                j++
+            }
         }
 
-        let posicaoAtualTexto = posicaoHorizontalTexto + ((itemAtual - 1) * espacamento);
-        let posicaoAtualLinhas = posicaoHorizontalLinhas + ((itemAtual - 1) * espacamento * linhasAOcupar);
- continuar daqui logica para ver se a descricao esta muito comprida 
- e também ver que quando gerei lista de 1 ou de 2 produtos ele gera uma pagina extra desncessaria
-        tabelaListradaComLinhas(doc, i, posicaoAtualLinhas, espacamento, linhasAOcupar);
+        linhaAtual++;
 
-        doc.text((lista[i].codigoProduto).toString(), 10, posicaoAtualTexto)
-        doc.text((lista[i].descricao).toString(), 30, posicaoAtualTexto)
-        doc.text(formatadorPreco(lista[i][precos]), 200, posicaoAtualTexto, null, null, 'right')
-
-        itemAtual++;
-
-        if (itemAtual > qtdeItensPorPagina || itemAtual > qtdeItens) {
+        if (linhaAtual > qtdeItensPorPagina) {
             if (numeroPagina != 0) {
                 numeroPagina++;
             }
-            itemAtual = 1;
-            qtdeItensPorPagina = 33;
+            linhaAtual = 0;
 
             doc.addPage("a4", "portrait")
-            montarCabecalhoENumerarPaginaListaPrecos(doc, titulo, tamanho, precos, ano, numeroPagina);
+            montarCabecalhoENumerarPaginaListaPrecos(doc, nomeLista, numeroPagina);
         }
     }
-    doc.save((titulo + " - " + tamanho + " - " + (precos == 'valorAtacado' ? 'Atacado' : 'Varejo') + ((ano == 0 || ano == '') ? '' : ' - ' + ano) + '.pdf').toString())
+    doc.save(nomeLista + '.pdf')
 
 }
 
