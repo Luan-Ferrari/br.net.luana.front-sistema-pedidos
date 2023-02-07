@@ -1,25 +1,28 @@
 
-function retornaStatusInput(identificadorInput, booleanValido) {
-    return (
-        {
-            identificador: identificadorInput,
-            valido: booleanValido
-        }
-    )
+// function retornaStatusInput(identificadorInput, booleanValido) {
 
-}
+//     return (
+//         {
+//             identificador: identificadorInput,
+//             valido: booleanValido
+//         }
+//     )
+
+// }
 
 function inputComErro(element, identificador) {
     element.style.border = 'solid #dc1826'
     element.style.borderWidth = ' 3px 1px 3px 1px'
+    element.prop("disabled", true)
 
-    return retornaStatusInput(identificador, false);
+    //return retornaStatusInput(identificador, false);
 }
 
 function inputOk(element, identificador) {
     element.style.border = 'solid 1px #DCDCE6'
+    element.prop("disabled", false)
 
-    return retornaStatusInput(identificador, true);
+    //return retornaStatusInput(identificador, true);
 }
 
 function validaObrigatorio(obrigatorio, value) {
@@ -43,7 +46,7 @@ function validaTamanho(minimo, maximo, value) {
 }
 
 function validaFormato(formato, value) {
-    if (formato) {
+    if (formato != false) {
         let regex = new RegExp(formato);
         if (regex.test(value)) {
             return true;
@@ -56,10 +59,16 @@ function validaFormato(formato, value) {
 }
 
 
-export function validadorCamposDeTexto(identificador, value,
-    validacoes = { obrigatorio: false, formato: false, minimo: 0, maximo: 999 }) {
+export function validadorCamposDeTexto(identificador, value, validacoes) {
+
+    console.log("entrou no validador");
 
     let element = document.getElementById(identificador);
+
+    console.log("identificador: " + identificador)
+    console.log("value : " + value)
+    console.log("element: ");
+    console.log(element)
 
     if (element != null) {
 

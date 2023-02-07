@@ -166,6 +166,25 @@ export function addOrRemoveObjects(item, array, propComparacao) {
     return arrayClone;
 }
 
+export function manipularListaCamposValidados(item, array) {
+    let arrayClone = Object.assign([], array);
+    let tamanhoArray = array.length;
+    let jaPossui = false;
+
+    for (let i = 0; i < tamanhoArray; i++) {
+        if (array[i].identificador == item.identificador) {
+            array[i].valido = item.valido
+            jaPossui = true;
+        }
+    }
+
+    if (!jaPossui) {
+        arrayClone.push(item)
+    } 
+
+    return arrayClone;
+}
+
 // export function creatObjectById(idObject) {
 //     return { id: idObject }
 // }

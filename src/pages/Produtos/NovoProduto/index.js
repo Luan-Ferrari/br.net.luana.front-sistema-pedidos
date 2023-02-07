@@ -10,7 +10,7 @@ import { createDefaultHeader } from '../../DefaultComponents/header/header';
 
 import api from '../../../services/api'
 import { booleanButtonField, defaultField, selectField, checkboxListField } from '../../DefaultComponents/fields/form-fields/form-fields';
-import { validadorCamposDeTexto }  from '../../DefaultComponents/validadores/validadores';
+
 import headerAuthorization from '../../DefaultComponents/authorization/authorization';
 
 
@@ -41,7 +41,9 @@ export default function NovoProduto() {
 
     const [formularioValido, setFormularioValido] = useState(false);
 
-    const [listaErrosFormulario, setListaErrosFormulario] = useState([]);
+    const [listaCamposValidados, setListaCamposValidados] = useState([]);
+
+    const [forcarReRenderizacao, setForcarReRenderizacao] = useState(0);
 
     const navigate = useNavigate();
 
@@ -98,26 +100,23 @@ export default function NovoProduto() {
                     <div className="conteudo-janela-padrao">
                         <form id='form-novo-produto' onSubmit={ criarNovoProduto }>
                    
-                            {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
-                            {validadorCamposDeTexto("codigo-produto", codigoProduto, {obrigatorio : true})}
+                            {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto, {obrigatorio : true})}
+                            
+                            {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao, {obrigatorio: true})}
 
-                            {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
+                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto, {obrigatorio: true})}
 
-                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
+                            {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto, {obrigatorio: true})}
 
-                            {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
-
-                            {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
-                            {validadorCamposDeTexto("codigo-produto", codigoProduto, {obrigatorio : true, formato : "^[0-9]+[,][0-9]{2}$"})}
+                            {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado, {obrigatorio : true, formato : "^[0-9]+[.][0-9]{2}$"})}
                           
-                            {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
-                            {validadorCamposDeTexto("codigo-produto", codigoProduto, {obrigatorio : true, formato : "^[0-9]+[,][0-9]{2}$"})}
-
-                            {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto, 
-                                "id", setViewClasseProduto, viewClasseProduto, listaClassesProdutos, "nomeClasse")}
+                            {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo, {obrigatorio : true, formato : "^[0-9]+[.][0-9]{2}$"})}
 
                             {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto, 
-                                "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
+                                "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao", {obrigatorio : true})}
+
+                            {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto, 
+                                "id", setViewClasseProduto, viewClasseProduto, listaClassesProdutos, "nomeClasse", {obrigatorio : true})}
 
                             {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao")}
 
@@ -128,6 +127,7 @@ export default function NovoProduto() {
                             </div>
                         </form>
                     </div>
+                    {(forcarReRenderizacao == 0) ? setForcarReRenderizacao(1) : ''}
                 </div>
             </div>
         </div>

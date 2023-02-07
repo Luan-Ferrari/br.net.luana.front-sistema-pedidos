@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useId } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import {
@@ -246,7 +246,7 @@ export default function Produtos() {
                                 </thead>
                                 <tbody>
                                     {listaFiltrada.map((a) => (
-                                        <tr>
+                                        <tr key={a.id}>
                                             <td>
                                                 <label className='container-checkbox'>
                                                     <input

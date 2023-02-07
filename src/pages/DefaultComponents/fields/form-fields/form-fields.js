@@ -1,27 +1,12 @@
+import { validadorCamposDeTexto }  from '../../validadores/validadores';
+
+
 import { criarListaItensSelecionados, marcarCheckboxesByIds } from '../../manipuladores/manipuladorArraysEObjetos';
 
-// export function defaultField(identificador, labelText, classe, value, setter) {
-//     return (
-//         <div id={identificador}>
-//             <label htmlFor={identificador}>{labelText}</label>
-//             <input
-//                 name={identificador}
-//                 className={classe}
-//                 value={value}
-//                 onChange={e => setter(e.target.value)}
-//             />
-//         </div>
-//     )
-// }
 
-
-
-
-
-export function defaultField(identificador, labelText, classe, value, setter) {
-
-    //criar um elemento "global" no JS para que ele receba a informação daqui se tem algum campo não validado corretamente
-
+export function defaultField(identificador, labelText, classe, value, setter,
+    validacoes = { obrigatorio: false, formato: false, minimo: 0, maximo: 999 }
+) {
     return (
         <div id={identificador}>
             <label htmlFor={identificador}>{labelText}</label>
@@ -29,24 +14,32 @@ export function defaultField(identificador, labelText, classe, value, setter) {
                 name={identificador}
                 className={classe}
                 value={value}
-                onChange={e => setter(e.target.value)}
+                onChange={e => {
+                    setter(e.target.value)
+                }} 
+                required={validacoes.obrigatorio}
+                pattern={validacoes.formato}
+                minLength={validacoes.minimo}
+                maxLength={validacoes.maximo}             
             />
         </div>
     )
 }
 
-export function booleanButtonField(identificador, labelText, textoOpcaoUm, textoOpcaoDois, setter, valorOpcaoUm = true, valorOpcaoDois = false) {
+export function booleanButtonField(identificador, labelText, textoOpcaoUm, 
+    textoOpcaoDois, setter, validacoes = {obrigatorio: false}, 
+    valorOpcaoUm = true, valorOpcaoDois = false) {
     return (
         <div className="boolean-button-container" id={identificador}>
             <label>{labelText}</label>
             <div className="boolean-button">
                 <input type="radio" id={textoOpcaoUm} name={identificador}
-                    onClick={e => setter(valorOpcaoUm)} />
+                    onClick={e => setter(valorOpcaoUm)} required={validacoes.obrigatorio} />
                 <label className="botao-um" htmlFor={textoOpcaoUm}>{textoOpcaoUm}</label>
             </div>
             <div className="boolean-button">
                 <input type="radio" id={textoOpcaoDois} name={identificador}
-                    onClick={e => setter(valorOpcaoDois)} />
+                    onClick={e => setter(valorOpcaoDois)} required={validacoes.obrigatorio}/>
                 <label className="botao-dois" htmlFor={textoOpcaoDois}>{textoOpcaoDois}</label>
             </div>
         </div>
@@ -55,7 +48,7 @@ export function booleanButtonField(identificador, labelText, textoOpcaoUm, texto
 
 //atributo
 export function selectField(identificador, labelText, selectDefaultText, setter, atributoIdentificador,
-    setterView, viewValue, listaOpcoes, atributoNome) {
+    setterView, viewValue, listaOpcoes, atributoNome, validacoes = {obrigatorio: false}) {
     return (
         <div id={identificador}>
             <label htmlFor={identificador}>{labelText}</label>
@@ -65,7 +58,8 @@ export function selectField(identificador, labelText, selectDefaultText, setter,
                 onChange={e => {
                     setter({ [atributoIdentificador]: e.target.value })
                     setterView(e.target.value)
-                }}>
+                }}
+                required>
                 <option value="">{selectDefaultText}</option>
                 {listaOpcoes.map((a) => (
                     <option value={a[atributoIdentificador]}>{a[atributoNome]}</option>
