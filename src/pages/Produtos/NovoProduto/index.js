@@ -104,9 +104,9 @@ export default function NovoProduto() {
                             
                             {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao, {obrigatorio: true})}
 
-                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto, {obrigatorio: true})}
-
                             {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto, {obrigatorio: true})}
+                            
+                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto, {obrigatorio: true})}
 
                             {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado, {obrigatorio : true, formato : "^[0-9]+[.][0-9]{2}$"})}
                           
@@ -118,9 +118,9 @@ export default function NovoProduto() {
                             {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto, 
                                 "id", setViewClasseProduto, viewClasseProduto, listaClassesProdutos, "nomeClasse", {obrigatorio : true})}
 
-                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao")}
+                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao", {obrigatorio : true})}
 
-                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, "descricao")}
+                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, "descricao", {obrigatorio : true})}
 
                             <div id="botao-submit">
                                 <button type="submit">Adicionar</button>

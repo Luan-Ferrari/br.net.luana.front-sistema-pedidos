@@ -1,7 +1,4 @@
-import { validadorCamposDeTexto }  from '../../validadores/validadores';
-
-
-import { criarListaItensSelecionados, marcarCheckboxesByIds } from '../../manipuladores/manipuladorArraysEObjetos';
+import { criarListaItensSelecionados, manipularCheckboxVerificador } from '../../manipuladores/manipuladorArraysEObjetos';
 
 
 export function defaultField(identificador, labelText, classe, value, setter,
@@ -16,18 +13,18 @@ export function defaultField(identificador, labelText, classe, value, setter,
                 value={value}
                 onChange={e => {
                     setter(e.target.value)
-                }} 
+                }}
                 required={validacoes.obrigatorio}
                 pattern={validacoes.formato}
                 minLength={validacoes.minimo}
-                maxLength={validacoes.maximo}             
+                maxLength={validacoes.maximo}
             />
         </div>
     )
 }
 
-export function booleanButtonField(identificador, labelText, textoOpcaoUm, 
-    textoOpcaoDois, setter, validacoes = {obrigatorio: false}, 
+export function booleanButtonField(identificador, labelText, textoOpcaoUm,
+    textoOpcaoDois, setter, validacoes = { obrigatorio: false },
     valorOpcaoUm = true, valorOpcaoDois = false) {
     return (
         <div className="boolean-button-container" id={identificador}>
@@ -39,7 +36,7 @@ export function booleanButtonField(identificador, labelText, textoOpcaoUm,
             </div>
             <div className="boolean-button">
                 <input type="radio" id={textoOpcaoDois} name={identificador}
-                    onClick={e => setter(valorOpcaoDois)} required={validacoes.obrigatorio}/>
+                    onClick={e => setter(valorOpcaoDois)} required={validacoes.obrigatorio} />
                 <label className="botao-dois" htmlFor={textoOpcaoDois}>{textoOpcaoDois}</label>
             </div>
         </div>
@@ -48,7 +45,7 @@ export function booleanButtonField(identificador, labelText, textoOpcaoUm,
 
 //atributo
 export function selectField(identificador, labelText, selectDefaultText, setter, atributoIdentificador,
-    setterView, viewValue, listaOpcoes, atributoNome, validacoes = {obrigatorio: false}) {
+    setterView, viewValue, listaOpcoes, atributoNome, validacoes = { obrigatorio: false }) {
     return (
         <div id={identificador}>
             <label htmlFor={identificador}>{labelText}</label>
@@ -59,7 +56,7 @@ export function selectField(identificador, labelText, selectDefaultText, setter,
                     setter({ [atributoIdentificador]: e.target.value })
                     setterView(e.target.value)
                 }}
-                required>
+                required={validacoes.obrigatorio}>
                 <option value="">{selectDefaultText}</option>
                 {listaOpcoes.map((a) => (
                     <option value={a[atributoIdentificador]}>{a[atributoNome]}</option>
@@ -75,7 +72,8 @@ export function selectField(identificador, labelText, selectDefaultText, setter,
     // que vem do backend que contem a informacao que queremos exibir ao usuario
 }
 
-export function checkboxListField(identificador, labelText, setter, atributoIdentificador, listaOpcoes, atributoNome) {
+export function checkboxListField(identificador, labelText, setter, atributoIdentificador, listaOpcoes, atributoNome,
+    validacoes = { obrigatorio: false }) {
     return (
         <div id={identificador}>
             <label htmlFor={identificador}>{labelText}</label>
@@ -94,6 +92,16 @@ export function checkboxListField(identificador, labelText, setter, atributoIden
                         </label>
                     </div>
                 ))}
+                <div>
+                    <input
+                        type="checkbox"
+                        id={"verificador-checkbox-opcoes"}
+                        name={identificador + "-verificador-checkbox-opcoes"}
+                        required={validacoes.obrigatorio}
+                        checked = {(criarListaItensSelecionados(listaOpcoes, '#' + identificador + ' input'))==0 ? false : true}>
+                            
+                    </input>
+                </div>
             </div>
         </div>
     )

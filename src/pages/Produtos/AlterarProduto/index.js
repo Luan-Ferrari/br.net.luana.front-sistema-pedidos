@@ -126,30 +126,30 @@ export default function AlterarProduto() {
                     <div className="conteudo-janela-padrao">
                         <form id='form-alterar-produto' onSubmit={alterarProduto}>
 
-                            {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto)}
+                            {defaultField("codigo-produto", "Código do Produto", "texto-tam-1", codigoProduto, setCodigoProduto, { obrigatorio: true })}
 
-                            {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao)}
+                            {defaultField("descricao-produto", "Descrição do Produto", "texto-tam-3", descricao, setDescricao, { obrigatorio: true })}
 
-                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto)}
-                            {marcarBooleanButon('Sim', 'Não', (conjunto == true ? 'Sim' : 'Não'))}
-
-                            {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto)}
+                            {booleanButtonField("adulto", "Adulto", "Adulto", "Infantil", setAdulto, { obrigatorio: true })}
                             {marcarBooleanButon('Adulto', 'Infantil', (adulto == true ? 'Adulto' : 'Infantil'))}
 
-                            {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado)}
+                            {booleanButtonField("conjunto", "Conjunto", "Sim", "Não", setConjunto, { obrigatorio: true })}
+                            {marcarBooleanButon('Sim', 'Não', (conjunto == true ? 'Sim' : 'Não'))}
 
-                            {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo)}
+                            {defaultField("valor-atacado", "Valor Atacado", "texto-tam-1", valorAtacado, setValorAtacado, { obrigatorio: true, formato: "^[0-9]+[.][0-9]{2}$" })}
 
-                            {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto,
-                                "id", setViewClasseProduto, viewClasseProduto, listaClassesProdutos, "nomeClasse")}
+                            {defaultField("valor-varejo", "Valor Varejo", "texto-tam-1", valorVarejo, setValorVarejo, { obrigatorio: true, formato: "^[0-9]+[.][0-9]{2}$" })}
 
                             {selectField("status-produto", "Status do Produto", "Selecione um Status", setStatusProduto,
-                                "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao")}
+                                "id", setViewStatusProduto, viewStatusProduto, listaStatusProduto, "descricao", { obrigatorio: true })}
 
-                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao")}
+                            {selectField("classe-produto", "Classe do Produto", "Selecione uma Classe", setClasseProduto,
+                                "id", setViewClasseProduto, viewClasseProduto, listaClassesProdutos, "nomeClasse", { obrigatorio: true })}
+
+                            {checkboxListField("colecoes", "Coleções", setColecoes, "id", listaColecoes, "nomeColecao", { obrigatorio: true })}
                             {marcarCheckboxesByIds(colecoes, '#colecoes input')}
 
-                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, "descricao")}
+                            {checkboxListField("tamanhos", "Tamanhos", setTamanhosAceitos, "id", listaTamanhos, "descricao", { obrigatorio: true })}
                             {marcarCheckboxesByIds(tamanhosAceitos, '#tamanhos input')}
 
                             <div id="botao-submit">

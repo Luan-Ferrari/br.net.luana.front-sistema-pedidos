@@ -46,7 +46,7 @@ export function marcarCheckboxesByIds(listaSelecionados, seletor) {
 
     for (let i = 0; i < quantidadeSelecionados; i++) {
         for (let j = 0; j < quantidadeCheckboxes; j++) {
-            if (listaSelecionados[i].id == checkboxes[j].value) {
+            if (listaSelecionados[i] != undefined && listaSelecionados[i].id == checkboxes[j].value) {
                 checkboxes[j].checked = true;
             }
         }
@@ -112,6 +112,19 @@ export function formatadorPreco(valor) {
 
 export function ordenarPorCodigoProduto(objA, objB) {
     return objA.codigoProduto - objB.codigoProduto;
+}
+
+export function manipularCheckboxVerificador(nameElemento, listaVeficadora) {
+    let checkboxVerificador = document.getElementsByName(nameElemento)[0];
+    console.log(checkboxVerificador)
+
+    if (checkboxVerificador != undefined) {
+        if(listaVeficadora > 0) {
+            checkboxVerificador.checked = true
+        } else {
+            checkboxVerificador.checked = false
+        }
+    }
 }
 
 

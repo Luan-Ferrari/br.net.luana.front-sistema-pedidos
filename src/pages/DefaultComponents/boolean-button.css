@@ -1,10 +1,10 @@
-.boolean-button-container{
+.boolean-button-container {
     min-width: 120px;
     width: 100%;
 }
 
 .boolean-button {
-   position: absolute;
+    position: absolute;
 }
 
 .boolean-button label {
@@ -13,7 +13,7 @@
     cursor: pointer;
     height: 38px;
     width: 60px;
-    
+
     margin: -3px -10px 0 -10px;
     text-align: center;
     line-height: 35px;
@@ -42,12 +42,41 @@
     /* border-style: solid solid solid none; */
 }
 
-.boolean-button input:checked ~ label {
+.boolean-button input:checked~label {
     background-color: #cc2388;
     color: #ffffff;
-    
 }
 
 .boolean-button-container input {
-  display: none;
+    position: absolute;
+    width: 1px;
+    opacity: 0;
+}
+
+.boolean-button-container input:invalid~.botao-um {
+    border: solid #dc1826;
+    border-width: 2px 0px 2px 1px;
+    line-height: 31px;
+    transition: all 0.2s ease;
+}
+
+.boolean-button-container input:invalid~.botao-dois {
+    border: solid #dc1826;
+    border-width: 2px 1px 2px 0px;
+    line-height: 31px;
+    transition: all 0.2s ease;
+}
+
+.boolean-button-container input:focus~.botao-um {
+    border: solid #3d293b;
+    border-width: 2px 0px 2px 1px;
+    line-height: 31px;
+    transition: all 0.2s ease;
+}
+
+.boolean-button-container input:focus~.botao-dois {
+    border: solid #3d293b;
+    border-width: 2px 1px 2px 0px;
+    line-height: 31px;
+    transition: all 0.2s ease;
 }
