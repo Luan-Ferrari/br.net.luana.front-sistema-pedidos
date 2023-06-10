@@ -31,7 +31,9 @@ export function criarListaItensSelecionados(lista, seletor) {
 
     for (let i = 0; i < quantidadeCheckboxes; i++) {
         if (checkboxes[i].checked) {
-            listaSelecionados.push(lista[i])
+            if (checkboxes[i].id != "verificador-checkbox-opcoes") {
+                listaSelecionados.push(lista[i])
+            }
         }
     }
 
@@ -119,7 +121,7 @@ export function manipularCheckboxVerificador(nameElemento, listaVeficadora) {
     console.log(checkboxVerificador)
 
     if (checkboxVerificador != undefined) {
-        if(listaVeficadora > 0) {
+        if (listaVeficadora > 0) {
             checkboxVerificador.checked = true
         } else {
             checkboxVerificador.checked = false
@@ -193,7 +195,7 @@ export function manipularListaCamposValidados(item, array) {
 
     if (!jaPossui) {
         arrayClone.push(item)
-    } 
+    }
 
     return arrayClone;
 }
